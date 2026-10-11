@@ -35,9 +35,12 @@ Una vez instalado, el administrador configura el plugin desde **Administración 
 
 ## Evidencia de validación en instalación limpia
 
-El procedimiento de instalación desde el archivo `.zip` fue validado exitosamente en un entorno con una instalación limpia de Moodle.
+El procedimiento de instalación desde el archivo `.zip` se probó en un sitio Moodle recién instalado, sin el plugin.
 
 ### Registro de instalación
-- **Entorno:** Moodle 4.5+ (Build: 20241018) | PHP 8.1.x
-- **Método de prueba:** Carga de `local_chuspasocial.zip` a través de `/admin/tool/installaddon/index.php`.
-- **Resultado:** El plugin fue detectado, instalado y registrado en la base de datos correctamente sin presentar errores de dependencias ni advertencias durante el proceso.
+- **Entorno:** Moodle 4.3.11+ (Build: 20250411) | PHP 8.2.12 | MariaDB 10.4.32 (XAMPP en Windows).
+- **Método de prueba:** carga del archivo `.zip` en `/admin/tool/installaddon/index.php`, con **Tipo de plugin** = `Local plugin (local)`.
+- **Validación:** `Validating local_chuspasocial ... OK`, con la advertencia informativa `Declared maturity level [MATURITY_ALPHA]` porque el plugin se declara en fase alfa.
+- **Pantalla Plugins check:** `local_chuspasocial` aparece como `To be installed`.
+- **Resultado:** tras **Actualizar base de datos de Moodle ahora**, la instalación terminó con éxito y el plugin quedó disponible en **Administración del sitio** > **Plugins** > **Plugins locales** > **ChuspaSocial**.
+- **Nota:** el plugin declara Moodle 4.5 como versión mínima. Esta prueba se hizo en Moodle 4.3.11, por lo que el ZIP de prueba tenía `requires` y `supported` rebajados en `version.php`; ese cambio no forma parte del repositorio.
