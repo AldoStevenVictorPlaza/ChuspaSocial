@@ -6,6 +6,7 @@
 
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
+| RF-001 | Ver el muro general al ingresar y mostrar primero las publicaciones más recientes | Alta | Pendiente |
 | RF-006 | Eliminar una publicación propia | Alta | Pendiente |
 | RF-008 | Cargar más publicaciones | Media | Pendiente |
 
@@ -28,6 +29,19 @@
 | RF-019 | Ver el perfil social de un usuario | Media | Pendiente |
 
 #### Criterios de aceptación
+### RF-001: Ver el muro general al ingresar
+
+**Criterio 1**
+
+* **Dado** un usuario autenticado,
+* **Cuando** ingresa al módulo Muro,
+* **Entonces** el sistema muestra las publicaciones disponibles en el muro general.
+
+**Criterio 2**
+
+* **Dado** que existen varias publicaciones en el muro,
+* **Cuando** el usuario visualiza el muro general,
+* **Entonces** las publicaciones se muestran desde la más reciente hasta la más antigua.
 
 ### RF-006
 
