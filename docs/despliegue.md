@@ -20,6 +20,19 @@ Esta guía describe el procedimiento para instalar el plugin `local_chuspasocial
 
 ---
 
+## Ajustes del plugin
+
+Una vez instalado, el administrador configura el plugin desde **Administración del sitio** > **Plugins** > **Plugins locales** > **ChuspaSocial**. Los ajustes se guardan en la base de datos de Moodle con el botón **Guardar cambios**; no hace falta editar `config.php` ni definir variables de entorno.
+
+| Ajuste | Variable | Descripción | Valor por defecto |
+| :--- | :--- | :--- | :--- |
+| Habilitar marketplace | `enablemarketplace` | Activa o desactiva el marketplace del plugin. | `1` (activado) |
+| Longitud máxima de publicación | `maxpostlength` | Cantidad máxima de caracteres por publicación. | `1000` |
+| Máximo de imágenes por publicación | `maxpostimages` | Cantidad máxima de imágenes por publicación. | `5` |
+| Publicaciones por página | `postsperpage` | Cantidad de publicaciones que se muestran por página. | `15` |
+| Moneda | `currency` | Código de la moneda en que se expresan los precios. | `BOB` |
+---
+
 ## Evidencia de validación en instalación limpia
 
 El procedimiento de instalación desde el archivo `.zip` fue validado exitosamente en un entorno con una instalación limpia de Moodle.
