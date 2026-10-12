@@ -12,20 +12,34 @@ Botón **Fork** en la esquina superior derecha de GitHub.
 
 ### 2. Clona tu fork
 ```bash
-git clone https://github.com/TU-USUARIO/PROYECTO.git
-cd PROYECTO
+git clone https://github.com/TU-USUARIO/ChuspaSocial.git
+cd ChuspaSocial
 ```
 
 ### 3. Agrega el repo original como upstream
 ```bash
-git remote add upstream https://github.com/sis-inf/PROYECTO.git
+git remote add upstream https://github.com/sis-inf/ChuspaSocial.git
 ```
 
 ### 4. Sincroniza antes de trabajar
+`git fetch upstream` descarga la información más reciente del repositorio original y actualiza las referencias remotas, sin modificar directamente la rama de trabajo.
+
 ```bash
-git checkout dev
-git pull upstream dev
+git fetch upstream
 ```
+
+`git rebase upstream/dev` actualiza la rama de trabajo colocando sus cambios sobre la versión más reciente de la rama `dev` del repositorio original.
+
+```bash
+git rebase upstream/dev
+```
+
+`git push --force-with-lease` actualiza la rama remota después de realizar un `rebase`, evitando sobrescribir cambios remotos que no se hayan recibido previamente.
+
+```bash
+git push --force-with-lease
+```
+
 
 ### 5. Crea tu rama de trabajo
 ```bash
@@ -34,12 +48,12 @@ git checkout -b tipo/descripcion-corta
 
 Ejemplos de nombres de rama:
 
-feat/endpoint-metricas-cpu
-docs/readme-instalacion
-fix/calculo-ram-incorrecto
-test/pruebas-unitarias-cpu
-chore/configurar-github-actions
-security/analisis-dependencias
+feat/post-service-create
+docs/rf-012-comentarios
+fix/orden-comentarios
+test/post-service-create
+chore/configurar-phpcs-moodle
+security/validar-capabilities-publicaciones
 
 ### 6. Trabaja y haz commits pequeños
 ```bash
@@ -53,8 +67,8 @@ git push origin tipo/descripcion-corta
 ```
 
 ### 8. Abre un Pull Request
-- Base: `sis-inf/PROYECTO` → rama `dev`
-- Compare: `TU-USUARIO/PROYECTO` → tu rama
+- Base: `sis-inf/ChuspaSocial` → rama `dev`
+- Compare: `TU-USUARIO/ChuspaSocial` → tu rama
 
 ---
 
@@ -73,11 +87,11 @@ git push origin tipo/descripcion-corta
 
 ### Ejemplos
 
-feat: agregar endpoint /metrics para CPU
-fix: corregir cálculo de porcentaje de RAM
-docs: agregar guía de instalación en Windows
-test: agregar pruebas unitarias para módulo de disco
-chore: configurar GitHub Actions para CI
+feat: agregar creación de publicaciones en el muro
+fix: corregir orden cronológico de comentarios
+docs: documentar RF-012 para ver comentarios de una publicación
+test: agregar pruebas para la creación de publicaciones
+chore: configurar phpcs con el estándar de Moodle
 
 ---
 
@@ -103,6 +117,69 @@ chore: configurar GitHub Actions para CI
 | `docs/*` | Documentación |
 | `test/*` | Pruebas |
 | `chore/*` | Configuración |
+
+## Convenciones de nombres de Moodle
+
+Para mantener el código consistente con Moodle, usa estas convenciones:
+
+- **Frankenstyle:** el nombre del componente es `local_chuspasocial`. Úsalo como prefijo cuando Moodle requiera identificar el plugin.
+- **Tablas de base de datos:** sus nombres deben tener como máximo 28 caracteres y mantenerse relacionados con el componente.
+- **Namespaces:** las clases del plugin deben usar el namespace `local_chuspasocial\...` y ubicarse dentro de `classes/` según su responsabilidad.
+- **Claves de strings:** usa identificadores descriptivos en minúsculas y sin espacios, definidos en los archivos de idioma del componente.
+
+---
+
+## Resolver conflictos de merge
+
+Un conflicto aparece cuando tu rama y `dev` cambiaron las mismas líneas de un archivo. Pasa seguido en archivos que muchos editan a la vez, como `docs/glosario.md`. Ejemplo: tú agregaste el término «Hilo» y otro PR ya fusionado agregó «Grupo» en el mismo lugar de la tabla.
+
+### 1. Trae los cambios de `dev` a tu rama
+```bash
+git checkout docs/mi-rama
+git fetch upstream
+git merge upstream/dev
+```
+
+Git avisa qué archivo tiene conflicto:
+
+```text
+CONFLICTO (contenido): Conflicto de fusión en docs/glosario.md
+```
+
+### 2. Busca las marcas de conflicto en el archivo
+```text
+<<<<<<< HEAD
+| Hilo | Conversación formada por una publicación y sus comentarios. |
+=======
+| Grupo | Conjunto de usuarios de un curso que comparten publicaciones. |
+>>>>>>> upstream/dev
+```
+
+- Entre `<<<<<<< HEAD` y `=======` está tu versión.
+- Entre `=======` y `>>>>>>> upstream/dev` está lo que ya tiene `dev`.
+
+### 3. Deja el resultado correcto y borra las marcas
+En una tabla como la del glosario casi siempre hay que conservar las dos filas, en orden alfabético:
+
+```text
+| Grupo | Conjunto de usuarios de un curso que comparten publicaciones. |
+| Hilo | Conversación formada por una publicación y sus comentarios. |
+```
+
+Comprueba que no quedó ninguna marca (no debe mostrar nada):
+
+```bash
+git grep -n '<<<<<<<' -- docs/glosario.md
+```
+
+### 4. Termina el merge y sube tu rama
+```bash
+git add docs/glosario.md
+git commit --no-edit
+git push origin docs/mi-rama
+```
+
+El PR se actualiza solo con el nuevo commit. Nunca uses `git push --force` para resolver un conflicto.
 
 ---
 
