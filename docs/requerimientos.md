@@ -6,6 +6,7 @@
 
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
+| RF-003 | Publicar en el muro de una materia | Alta | Pendiente |
 | RF-006 | Eliminar una publicación propia | Alta | Pendiente |
 | RF-008 | Cargar más publicaciones | Media | Pendiente |
 
@@ -28,7 +29,10 @@
 | RF-019 | Ver el perfil social de un usuario | Media | Pendiente |
 
 #### Criterios de aceptación
+### RF-003
 
+- **Dado** que el usuario ha iniciado sesión y pertenece a una materia, **cuando** publica un mensaje en el muro de esa materia, **entonces** el sistema debe registrar y mostrar la publicación.
+- **Dado** que el usuario intenta publicar un mensaje vacío, **cuando** confirma la publicación, **entonces** el sistema debe impedir que se publique.
 ### RF-006
 
 **Criterio 1**
