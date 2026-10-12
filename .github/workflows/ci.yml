@@ -53,6 +53,11 @@ jobs:
           fi
           echo "✅ PR tiene un título válido"
 
+      - name: Instalar moodle-plugin-ci
+        run: |
+          composer global require moodlehq/moodle-plugin-ci
+          echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
+
       - name: Ejecutar phpunit
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phpunit --fail-on-warning
