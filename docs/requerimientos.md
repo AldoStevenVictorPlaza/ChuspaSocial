@@ -8,6 +8,7 @@
 |---|---|---|---|
 | RF-006 | Eliminar una publicación propia | Alta | Pendiente |
 | RF-008 | Cargar más publicaciones | Media | Pendiente |
+| RF-004 | Adjuntar imagenes a una publicacion | Media | Pendiente |
 
 ### Módulo Tags
 
@@ -925,3 +926,16 @@
 |---|---|
 | RS-001 | El cron de Moodle debe estar activo y ejecutarse periódicamente para procesar las notificaciones y tareas programadas de ChuspaSocial. Si no se cumple, estas funciones pueden retrasarse o no ejecutarse. |
 | RS-003 | La funcionalidad de tags de Moodle debe estar habilitada mediante el ajuste `usetags`. Si no se cumple, las funciones de etiquetado y filtrado por tags de ChuspaSocial pueden no estar disponibles o funcionar incorrectamente. |
+### RF-004
+
+**Criterio 1**
+
+**Dado** un usuario autenticado que está creando o editando una publicación en el muro,
+**Cuando** selecciona adjuntar imágenes en formatos válidos (`.jpg`, `.png`, `.webp`) y la cantidad no supera el límite máximo $N$ configurado,
+**Entonces** el sistema debe permitir adjuntar y previsualizar las imágenes en la publicación.
+
+**Criterio 2**
+
+**Dado** un usuario autenticado en la pantalla de crear/editar publicación,
+**Cuando** intenta adjuntar un archivo con un formato no permitido o supera la cantidad máxima $N$ de imágenes permitidas,
+**Entonces** el sistema debe mostrar un mensaje de error restrictivo y evitar que se suban las imágenes.
