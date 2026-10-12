@@ -27,6 +27,11 @@ en cada PR mediante GitHub Actions.
 
 ## Versiones soportadas
 
-| Versión | Soportada |
-|---|---|
-| latest | ✅ |
+ChuspaSocial está en fase `0.x` (pre-1.0), por lo que solo se atienden reportes de seguridad sobre la última versión del plugin, ejecutándose en Moodle 4.5 LTS.
+
+| Componente | Versión | Soportada |
+|---|---|---|
+| Plugin `local_chuspasocial` | 0.x (última versión) | ✅ |
+| Plugin `local_chuspasocial` | Versiones 0.x anteriores a la última | ❌ |
+| Moodle | 4.5 LTS | ✅ |
+| Moodle | Otras versiones | ❌ |

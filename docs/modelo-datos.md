@@ -57,3 +57,53 @@ Una publicación registrada en `local_chuspasocial_post` puede tener varios come
 Asimismo, un usuario registrado en la tabla `user` de Moodle puede realizar varios comentarios, los cuales se relacionan mediante el campo `userid`.
 
 Estas relaciones permiten organizar los comentarios, identificar a sus autores y determinar a qué publicación pertenece cada uno.
+## Tabla `local_chuspasocial_report` (reportes de contenido)
+
+Almacena los reportes que los usuarios hacen sobre publicaciones, comentarios y anuncios.
+
+| Campo | Tipo XMLDB | Nulo | Descripción |
+|---|---|---|---|
+| `id` | INT(10), secuencia | NO | Clave primaria autoincremental del reporte. |
+| `itemtype` | CHAR(20) | NO | Tipo de contenido reportado. Valores permitidos: `post`, `comment`, `listing`. |
+| `itemid` | INT(10) | NO | ID del contenido reportado (se interpreta según `itemtype`). |
+| `reporterid` | INT(10) | NO | ID del usuario que realiza el reporte (referencia a `user.id`). |
+| `reason` | TEXT | NO | Motivo del reporte. |
+| `status` | CHAR(20) | NO | Estado del reporte. Valores permitidos: `open`, `resolved`, `dismissed`. Por defecto: `open`. |
+| `resolvedby` | INT(10) | SÍ | ID del usuario que resolvió el reporte (referencia a `user.id`). Nulo mientras no se resuelva. |
+| `timecreated` | INT(10) | NO | Marca de tiempo Unix de creación. |
+| `timeresolved` | INT(10) | SÍ | Marca de tiempo Unix de la resolución. Nulo mientras no se resuelva. |
+
+### Valores permitidos de `itemtype`
+
+| Valor | Significado |
+|---|---|
+| `post` | El reporte es sobre una publicación. |
+| `comment` | El reporte es sobre un comentario. |
+| `listing` | El reporte es sobre un anuncio de libro. |
+## Tabla `local_chuspasocial_listing` (anuncios de libros)
+
+Almacena los anuncios de libros publicados por los usuarios.
+
+| Campo | Tipo XMLDB | Nulo | Descripción |
+|---|---|---|---|
+| `id` | INT(10), secuencia | NO | Clave primaria autoincremental del anuncio. |
+| `userid` | INT(10) | NO | ID del usuario que publica el anuncio (referencia a `user.id`). |
+| `title` | CHAR(255) | NO | Título del libro. |
+| `author` | CHAR(255) | NO | Autor del libro. |
+| `description` | TEXT | SÍ | Descripción del anuncio. |
+| `descriptionformat` | INT(4) | NO | Formato de la descripción (constantes `FORMAT_*` de Moodle; por defecto `FORMAT_HTML` = 1). |
+| `price` | NUMBER(10,2) | NO | Precio del libro. |
+| `externalcontact` | CHAR(255) | SÍ | Contacto externo del vendedor (teléfono, correo u otro medio). |
+| `status` | CHAR(20) | NO | Estado del anuncio. Valores permitidos: `available` (disponible), `sold` (vendido). Por defecto: `available`. |
+| `timecreated` | INT(10) | NO | Marca de tiempo Unix de creación. |
+| `timemodified` | INT(10) | NO | Marca de tiempo Unix de la última modificación. |
+
+### Valores permitidos de `status`
+
+| Valor | Significado |
+|---|---|
+| `open` | El reporte está pendiente de revisión. |
+| `resolved` | El reporte fue atendido y se tomó una acción. |
+| `dismissed` | El reporte fue revisado y descartado sin acción. |
+| `available` | El libro está disponible para la venta. |
+| `sold` | El libro ya fue vendido. |
