@@ -209,3 +209,13 @@ El PR se actualiza solo con el nuevo commit. Nunca uses `git push --force` para 
 2. Comenta en el issue que quieres trabajarlo
 3. Espera confirmación antes de empezar
 4. Sigue los pasos de este documento
+
+## Cómo revisar un PR
+
+Al realizar la revisión de un Pull Request, por favor verifica que cumpla con el siguiente checklist:
+
+- [ ] **Cierra su issue:** El PR debe vincular y cerrar su issue correspondiente (ej. usando `Closes #N`).
+- [ ] **Toca un solo archivo:** Los cambios deben mantenerse enfocados y limitarse a los archivos estrictamente necesarios.
+- [ ] **Cumple los criterios:** La solución debe satisfacer todos los criterios de aceptación detallados en el issue.
+- [ ] **Pasa el CI:** Las pruebas de Integración Continua (Continuous Integration) deben ejecutarse y finalizar sin errores.
+- [ ] **Comentarios respetuosos:** Toda retroalimentación u observación debe comunicarse de manera constructiva y respetuosa.
