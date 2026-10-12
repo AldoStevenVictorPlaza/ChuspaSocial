@@ -210,6 +210,17 @@ El PR se actualiza solo con el nuevo commit. Nunca uses `git push --force` para 
 3. Espera confirmación antes de empezar
 4. Sigue los pasos de este documento
 
+## Cómo tomar un issue
+
+Antes de empezar a trabajar en un issue, sigue estos pasos:
+
+1. **Comenta en el issue:** indica que deseas trabajar en él y, si es posible, explica brevemente cómo planeas abordarlo.
+2. **Espera la asignación:** no empieces a implementar cambios hasta que un colaborador o mantenedor te asigne el issue.
+3. **Respeta el límite de trabajo:** cada persona puede tener como máximo 2 issues en progreso al mismo tiempo. Antes de asumir otro, termina o libera uno de los que tienes asignados.
+4. **Crea una rama desde `dev`:** utiliza una rama específica para el issue, siguiendo las convenciones de nombres de este documento.
+5. **Mantén el alcance de la contribución:** un issue = un archivo = un PR. Cada contribución debe centrarse en el archivo indicado y en los objetivos definidos en el issue.
+6. **Abre el Pull Request contra `dev`:** cuando termines, sube tu rama a tu fork y abre el PR dirigido a `dev`, nunca a `main`. Incluye una referencia al issue correspondiente, por ejemplo, `Closes #413`.
+
 ## Cómo revisar un PR
 
 Al realizar la revisión de un Pull Request, por favor verifica que cumpla con el siguiente checklist:
