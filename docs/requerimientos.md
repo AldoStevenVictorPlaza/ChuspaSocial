@@ -7,7 +7,9 @@
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
 | RF-001 | Ver el muro general al ingresar y mostrar primero las publicaciones más recientes | Alta | Pendiente |
+| RF-003 | Publicar en el muro de una materia | Alta | Pendiente |
 | RF-006 | Eliminar una publicación propia | Alta | Pendiente |
+| RF-007 | Ver el muro de una materia | Alta | Pendiente |
 | RF-008 | Cargar más publicaciones | Media | Pendiente |
 
 ### Módulo Tags
@@ -42,7 +44,10 @@
 * **Dado** que existen varias publicaciones en el muro,
 * **Cuando** el usuario visualiza el muro general,
 * **Entonces** las publicaciones se muestran desde la más reciente hasta la más antigua.
+### RF-003
 
+- **Dado** que el usuario ha iniciado sesión y pertenece a una materia, **cuando** publica un mensaje en el muro de esa materia, **entonces** el sistema debe registrar y mostrar la publicación.
+- **Dado** que el usuario intenta publicar un mensaje vacío, **cuando** confirma la publicación, **entonces** el sistema debe impedir que se publique.
 ### RF-006
 
 **Criterio 1**
@@ -56,6 +61,20 @@
 - **Dado** un usuario que intenta eliminar una publicación creada por otro usuario,
 - **Cuando** confirma la acción de eliminación,
 - **Entonces** el sistema rechaza la operación y mantiene la publicación sin cambios.
+
+### RF-007
+
+**Criterio 1**
+
+- **Dado** un estudiante inscrito en una materia,
+- **Cuando** accede al curso y selecciona la opción para ver el muro de la materia,
+- **Entonces** el sistema muestra el muro filtrado con las publicaciones de esa materia.
+
+**Criterio 2**
+
+- **Dado** un usuario que no está inscrito en una materia,
+- **Cuando** intenta acceder al muro de esa materia,
+- **Entonces** el sistema rechaza el acceso y no muestra las publicaciones de la materia.
 
 ### RF-008 - Cargar más publicaciones
 
@@ -233,6 +252,7 @@
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
 | RF-025 | Mostrar tareas nuevas en el muro de la materia | Media | Pendiente |
+| RF-026 | Avisar en privado que hay una calificación publicada: solo lo recibe el estudiante calificado y nunca es público | Baja | Pendiente |
 
 #### Criterios de aceptación
 
@@ -247,6 +267,18 @@
 - **Dado** un estudiante inscrito en una materia con tareas nuevas,
 - **Cuando** accede al muro de la materia,
 - **Entonces** ve las publicaciones de actividad correspondientes a las tareas nuevas, con la información de la tarea y su fecha.
+
+### RF-026
+
+**Criterio 1**
+- **Dado** un docente que publica la calificación de un estudiante en una tarea o parcial,
+- **Cuando** la calificación queda publicada,
+- **Entonces** el sistema envía un aviso privado únicamente a ese estudiante indicando que su calificación está disponible.
+
+**Criterio 2**
+- **Dado** un aviso de calificación publicada,
+- **Cuando** se genera la notificación,
+- **Entonces** el aviso no aparece en el muro ni es visible para otros usuarios que no sean el estudiante calificado.
 
 ### Administración
 
@@ -819,6 +851,7 @@
 | RF-034 | Ver los libros de mis materias | Alta | Pendiente |
 | RF-035 | Buscar libros por título o autor | Media | Pendiente |
 | RF-036 | Contactar al vendedor por la mensajería de Moodle | Alta | Pendiente |
+| RF-037 | Mostrar un contacto externo opcional | Baja | Pendiente |
 | RF-038 | Marcar un libro como vendido | Media | Pendiente |
 | RF-039 | Editar o eliminar un anuncio propio | Media | Pendiente |
 | RF-040 | Subir fotos del libro | Media | Pendiente |
@@ -859,6 +892,18 @@
 - *Dado* un usuario que ya inició una conversación con el vendedor desde el botón "Contactar",
 - *Cuando* envía un mensaje dentro de esa conversación,
 - *Entonces* el vendedor recibe el mensaje en su bandeja de mensajería de Moodle.
+
+### RF-037
+
+*Criterio 1*
+- **Dado** que el vendedor agregó un contacto externo a su anuncio,
+  **cuando** un comprador abre el detalle del anuncio,
+  **entonces** el sistema muestra el contacto externo junto con una advertencia de que la comunicación fuera de la mensajería de Moodle es responsabilidad de ambas partes.
+
+*Criterio 2*
+- **Dado** que el vendedor no agregó un contacto externo,
+  **cuando** un comprador abre el detalle del anuncio,
+  **entonces** el sistema no muestra ningún contacto externo y solo ofrece la mensajería de Moodle.
 
 ### RF-038
 
