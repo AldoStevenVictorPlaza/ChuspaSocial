@@ -26,6 +26,29 @@ Para mantener la compatibilidad con las restricciones de Moodle, los nombres de 
 
 Esta regla debe respetarse al definir los nombres de las siete tablas del modelo de datos.
 
+## Tabla `local_chuspasocial_report` (reportes de contenido)
+
+Almacena los reportes que los usuarios hacen sobre publicaciones, comentarios y anuncios.
+
+| Campo | Tipo XMLDB | Nulo | Descripción |
+|---|---|---|---|
+| `id` | INT(10), secuencia | NO | Clave primaria autoincremental del reporte. |
+| `itemtype` | CHAR(20) | NO | Tipo de contenido reportado. Valores permitidos: `post`, `comment`, `listing`. |
+| `itemid` | INT(10) | NO | ID del contenido reportado (se interpreta según `itemtype`). |
+| `reporterid` | INT(10) | NO | ID del usuario que realiza el reporte (referencia a `user.id`). |
+| `reason` | TEXT | NO | Motivo del reporte. |
+| `status` | CHAR(20) | NO | Estado del reporte. Valores permitidos: `open`, `resolved`, `dismissed`. Por defecto: `open`. |
+| `resolvedby` | INT(10) | SÍ | ID del usuario que resolvió el reporte (referencia a `user.id`). Nulo mientras no se resuelva. |
+| `timecreated` | INT(10) | NO | Marca de tiempo Unix de creación. |
+| `timeresolved` | INT(10) | SÍ | Marca de tiempo Unix de la resolución. Nulo mientras no se resuelva. |
+
+### Valores permitidos de `itemtype`
+
+| Valor | Significado |
+|---|---|
+| `post` | El reporte es sobre una publicación. |
+| `comment` | El reporte es sobre un comentario. |
+| `listing` | El reporte es sobre un anuncio de libro. |
 ## Tabla `local_chuspasocial_listing` (anuncios de libros)
 
 Almacena los anuncios de libros publicados por los usuarios.
@@ -48,5 +71,8 @@ Almacena los anuncios de libros publicados por los usuarios.
 
 | Valor | Significado |
 |---|---|
+| `open` | El reporte está pendiente de revisión. |
+| `resolved` | El reporte fue atendido y se tomó una acción. |
+| `dismissed` | El reporte fue revisado y descartado sin acción. |
 | `available` | El libro está disponible para la venta. |
 | `sold` | El libro ya fue vendido. |
