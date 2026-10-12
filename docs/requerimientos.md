@@ -7,6 +7,7 @@
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
 | RF-006 | Eliminar una publicación propia | Alta | Pendiente |
+| RF-007 | Ver el muro de una materia | Alta | Pendiente |
 | RF-008 | Cargar más publicaciones | Media | Pendiente |
 
 ### Módulo Tags
@@ -42,6 +43,20 @@
 - **Dado** un usuario que intenta eliminar una publicación creada por otro usuario,
 - **Cuando** confirma la acción de eliminación,
 - **Entonces** el sistema rechaza la operación y mantiene la publicación sin cambios.
+
+### RF-007
+
+**Criterio 1**
+
+- **Dado** un estudiante inscrito en una materia,
+- **Cuando** accede al curso y selecciona la opción para ver el muro de la materia,
+- **Entonces** el sistema muestra el muro filtrado con las publicaciones de esa materia.
+
+**Criterio 2**
+
+- **Dado** un usuario que no está inscrito en una materia,
+- **Cuando** intenta acceder al muro de esa materia,
+- **Entonces** el sistema rechaza el acceso y no muestra las publicaciones de la materia.
 
 ### RF-008 - Cargar más publicaciones
 
