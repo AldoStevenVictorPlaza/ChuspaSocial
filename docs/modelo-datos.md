@@ -49,6 +49,23 @@ Almacena los reportes que los usuarios hacen sobre publicaciones, comentarios y 
 | `post` | El reporte es sobre una publicación. |
 | `comment` | El reporte es sobre un comentario. |
 | `listing` | El reporte es sobre un anuncio de libro. |
+## Tabla `local_chuspasocial_listing` (anuncios de libros)
+
+Almacena los anuncios de libros publicados por los usuarios.
+
+| Campo | Tipo XMLDB | Nulo | Descripción |
+|---|---|---|---|
+| `id` | INT(10), secuencia | NO | Clave primaria autoincremental del anuncio. |
+| `userid` | INT(10) | NO | ID del usuario que publica el anuncio (referencia a `user.id`). |
+| `title` | CHAR(255) | NO | Título del libro. |
+| `author` | CHAR(255) | NO | Autor del libro. |
+| `description` | TEXT | SÍ | Descripción del anuncio. |
+| `descriptionformat` | INT(4) | NO | Formato de la descripción (constantes `FORMAT_*` de Moodle; por defecto `FORMAT_HTML` = 1). |
+| `price` | NUMBER(10,2) | NO | Precio del libro. |
+| `externalcontact` | CHAR(255) | SÍ | Contacto externo del vendedor (teléfono, correo u otro medio). |
+| `status` | CHAR(20) | NO | Estado del anuncio. Valores permitidos: `available` (disponible), `sold` (vendido). Por defecto: `available`. |
+| `timecreated` | INT(10) | NO | Marca de tiempo Unix de creación. |
+| `timemodified` | INT(10) | NO | Marca de tiempo Unix de la última modificación. |
 
 ### Valores permitidos de `status`
 
@@ -57,3 +74,5 @@ Almacena los reportes que los usuarios hacen sobre publicaciones, comentarios y 
 | `open` | El reporte está pendiente de revisión. |
 | `resolved` | El reporte fue atendido y se tomó una acción. |
 | `dismissed` | El reporte fue revisado y descartado sin acción. |
+| `available` | El libro está disponible para la venta. |
+| `sold` | El libro ya fue vendido. |
