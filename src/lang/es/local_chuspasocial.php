@@ -28,6 +28,16 @@ $string['pluginname'] = 'ChuspaSocial';
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['chuspasocial:comment'] = 'Comentar en publicaciones';
+$string['chuspasocial:createlisting'] = 'Publicar libros en el marketplace';
+$string['chuspasocial:follow'] = 'Seguir a usuarios y etiquetas';
+$string['chuspasocial:moderate'] = 'Moderar publicaciones y comentarios';
+$string['chuspasocial:post'] = 'Crear publicaciones';
+$string['chuspasocial:postannouncement'] = 'Publicar anuncios oficiales';
+$string['chuspasocial:react'] = 'Reaccionar a publicaciones';
+$string['chuspasocial:report'] = 'Reportar contenido';
+$string['chuspasocial:view'] = 'Ver ChuspaSocial';
+$string['chuspasocial:viewmarketplace'] = 'Ver el marketplace';
 $string['followtag'] = 'Seguir etiqueta';
 $string['postswithtag'] = 'Publicaciones con la etiqueta {$a}';
 $string['tagarea_local_chuspasocial_post'] = 'Publicaciones';
