@@ -28,8 +28,27 @@ $string['pluginname'] = 'ChuspaSocial';
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['available'] = 'Disponible';
+$string['bookauthor'] = 'Autor del libro';
+$string['bookdescription'] = 'Descripción del libro';
+$string['books'] = 'Libros';
+$string['booktitle'] = 'Título del libro';
+$string['contactseller'] = 'Contactar al vendedor';
+$string['courses'] = 'Materias';
+$string['externalcontact'] = 'Contacto externo';
+$string['externalcontactwarning'] = 'Este contacto es externo a la plataforma. Ten cuidado al compartir datos personales.';
 $string['followtag'] = 'Seguir etiqueta';
+$string['free'] = 'Gratis';
+$string['markassold'] = 'Marcar como vendido';
+$string['marketplace'] = 'Marketplace';
+$string['marketplacedisabled'] = 'El marketplace está deshabilitado.';
+$string['nobooks'] = 'No hay libros disponibles.';
+$string['photos'] = 'Fotos';
 $string['postswithtag'] = 'Publicaciones con la etiqueta {$a}';
+$string['price'] = 'Precio';
+$string['publishbook'] = 'Publicar libro';
+$string['searchbooks'] = 'Buscar libros';
+$string['sold'] = 'Vendido';
 $string['tagarea_local_chuspasocial_post'] = 'Publicaciones';
 $string['tags'] = 'Etiquetas';
 $string['unfollowtag'] = 'Dejar de seguir etiqueta';
