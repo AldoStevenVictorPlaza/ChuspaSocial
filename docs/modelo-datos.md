@@ -26,6 +26,26 @@ Para mantener la compatibilidad con las restricciones de Moodle, los nombres de 
 
 Esta regla debe respetarse al definir los nombres de las siete tablas del modelo de datos.
 
+## Tabla `local_chuspasocial_follow`
+
+Almacena los elementos que sigue cada usuario: otros usuarios y etiquetas (tags). Cada fila representa un seguimiento.
+
+| Campo         | Tipo XMLDB | Nulo | Descripción                                                                 |
+|---------------|------------|------|-----------------------------------------------------------------------------|
+| `id`          | INT(10)    | No   | Clave primaria autoincremental.                                             |
+| `userid`      | INT(10)    | No   | Id del usuario que sigue (referencia a `user.id`).                          |
+| `itemtype`    | CHAR(10)   | No   | Tipo de elemento seguido. Valores permitidos: `user`, `tag`.                |
+| `itemid`      | INT(10)    | No   | Id del elemento seguido: un `user.id` o un `tag.id`, según `itemtype`.      |
+| `timecreated` | INT(10)    | No   | Marca de tiempo Unix del momento en que se creó el seguimiento.             |
+
+### Valores permitidos de `itemtype`
+
+XMLDB no tiene un tipo enum, por lo que `itemtype` se define como `CHAR` y sus valores se validan en la aplicación.
+
+| Valor  | Significado                      | `itemid` apunta a |
+|--------|----------------------------------|-------------------|
+| `user` | El usuario sigue a otro usuario. | `user.id`         |
+| `tag`  | El usuario sigue una etiqueta.   | `tag.id`          |
 ## Tabla local_chuspasocial_comment
 
 La tabla local_chuspasocial_comment almacena los comentarios realizados por los usuarios en las publicaciones de ChuspaSocial.
