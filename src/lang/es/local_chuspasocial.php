@@ -24,6 +24,18 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['currency'] = 'Moneda';
+$string['currency_desc'] = 'Moneda utilizada para mostrar los precios.';
+$string['enablemarketplace'] = 'Habilitar el mercado';
+$string['enablemarketplace_desc'] = 'Permitir el uso del mercado de ChuspaSocial.';
+$string['followtag'] = 'Seguir etiqueta';
+$string['maxpostimages'] = 'Número máximo de imágenes por publicación';
+$string['maxpostimages_desc'] = 'Cantidad máxima de imágenes permitidas en una publicación.';
+$string['maxpostlength'] = 'Longitud máxima de las publicaciones';
+$string['maxpostlength_desc'] = 'Número máximo de caracteres permitidos en una publicación.';
+$string['pluginname'] = 'ChuspaSocial';
+$string['postsperpage'] = 'Publicaciones por página';
+$string['postsperpage_desc'] = 'Cantidad de publicaciones que se muestran en cada página.';
 $string['pluginname'] = 'ChuspaSocial';
 
 defined('MOODLE_INTERNAL') || die();
