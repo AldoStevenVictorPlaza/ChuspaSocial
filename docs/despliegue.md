@@ -35,12 +35,33 @@ Una vez instalado, el administrador configura el plugin desde **Administración 
 
 ## Evidencia de validación en instalación limpia
 
-El procedimiento de instalación desde el archivo `.zip` se probó en un sitio Moodle recién instalado, sin el plugin.
+Prueba realizada en una instalación limpia de Moodle 4.5.15, con el ZIP del
+plugin generado desde la rama `dev` **sin ninguna modificación**.
 
-### Registro de instalación
-- **Entorno:** Moodle 4.3.11+ (Build: 20250411) | PHP 8.2.12 | MariaDB 10.4.32 (XAMPP en Windows).
-- **Método de prueba:** carga del archivo `.zip` en `/admin/tool/installaddon/index.php`, con **Tipo de plugin** = `Local plugin (local)`.
-- **Validación:** `Validating local_chuspasocial ... OK`, con la advertencia informativa `Declared maturity level [MATURITY_ALPHA]` porque el plugin se declara en fase alfa.
-- **Pantalla Plugins check:** `local_chuspasocial` aparece como `To be installed`.
-- **Resultado:** tras **Actualizar base de datos de Moodle ahora**, la instalación terminó con éxito y el plugin quedó disponible en **Administración del sitio** > **Plugins** > **Plugins locales** > **ChuspaSocial**.
-- **Nota:** el plugin declara Moodle 4.5 como versión mínima. Esta prueba se hizo en Moodle 4.3.11, por lo que el ZIP de prueba tenía `requires` y `supported` rebajados en `version.php`; ese cambio no forma parte del repositorio.
+| Componente | Versión |
+| --- | --- |
+| Moodle | 4.5.15 |
+| PHP | 8.2.12 |
+| MariaDB | 10.11.19 |
+
+El ZIP se generó con `git archive --format=zip --prefix=chuspasocial/
+upstream/dev:src` y se subió desde Administración del sitio > Plugins >
+Instalar plugins.
+
+Resultado: al continuar con la actualización de la base de datos, Moodle falla en `admin/upgradesettings.php` con este error:
+
+```text
+Exception - syntax error, unexpected variable "$settings", expecting ")"
+```
+
+Comprobación con PHP sobre el archivo instalado:
+
+```text
+PHP Parse error: syntax error, unexpected variable "$settings", expecting ")" in local\chuspasocial\settings.php on line 56
+```
+
+Causa: en `src/settings.php`, el ajuste `enablemarketplace` (líneas 51 a 55)
+no se cierra con `));` antes de abrir el siguiente `$settings->add(` en la
+línea 56. Es un defecto del plugin en `dev`, ajeno a esta guía, y se reporta
+por separado. Hasta que se corrija, los pasos de ajustes de esta guía no se
+pueden verificar en Moodle 4.5.
