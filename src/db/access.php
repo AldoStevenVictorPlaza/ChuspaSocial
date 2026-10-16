@@ -33,4 +33,13 @@ $capabilities = array(
         ),
         'riskbitmask' => RISK_SPAM,
     ),
+    'local/chuspasocial:postannouncement' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+        ),
+        'riskbitmask' => RISK_SPAM,
+    ),
 );
