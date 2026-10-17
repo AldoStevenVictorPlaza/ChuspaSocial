@@ -45,7 +45,6 @@ use local_chuspasocial\local\listing_service;
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class get_listings extends external_api {
-
     /** @var int Maximum number of listings per page. */
     const MAX_PERPAGE = 50;
 
@@ -56,9 +55,12 @@ class get_listings extends external_api {
      */
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
-            'search' => new external_value(PARAM_TEXT,
+            'search' => new external_value(
+                PARAM_TEXT,
                 'Text to search in the title or author. Empty to get the listings of my courses.',
-                VALUE_DEFAULT, ''),
+                VALUE_DEFAULT,
+                ''
+            ),
             'page' => new external_value(PARAM_INT, 'Page number, starting at 0.', VALUE_DEFAULT, 0),
             'perpage' => new external_value(PARAM_INT, 'Listings per page (1 to 50).', VALUE_DEFAULT, 20),
         ]);
