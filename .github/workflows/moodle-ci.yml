@@ -21,7 +21,6 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: moodle
-          POSTGRES_DB: moodle
         ports:
           - 5432:5432
         options: >-
@@ -68,3 +67,6 @@ jobs:
         run: moodle-plugin-ci savepoints ./plugin/src
         env:
           MOODLE_BRANCH: MOODLE_405_STABLE
+
+
+
