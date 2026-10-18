@@ -31,6 +31,32 @@ namespace local_chuspasocial\local;
  */
 class listing_service {
     /**
+     * Search listings by book title or author, case insensitive.
+     *
+     * The search text is always passed as a SQL parameter, never concatenated.
+     *
+     * @param string $q Text to search in the title or the author.
+     * @param int $page Page number, starting at 0.
+     * @param int $perpage Number of listings per page.
+     * @return array List of listing records, newest first.
+     */
+    public static function search(string $q, int $page, int $perpage): array {
+        global $DB;
+
+        $titlelike = $DB->sql_like('l.title', ':title', false);
+        $authorlike = $DB->sql_like('l.author', ':author', false);
+        $pattern = '%' . $DB->sql_like_escape(trim($q)) . '%';
+
+        $sql = "SELECT l.*
+                  FROM {local_chuspasocial_listing} l
+                 WHERE $titlelike OR $authorlike
+              ORDER BY l.timecreated DESC, l.id DESC";
+        $params = ['title' => $pattern, 'author' => $pattern];
+
+        return array_values($DB->get_records_sql($sql, $params, $page * $perpage, $perpage));
+    }
+
+    /**
      * Get the available listings linked to the courses of the current user.
      *
      * A listing linked to several courses of the user is returned only once.
