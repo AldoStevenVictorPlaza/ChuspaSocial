@@ -2,10 +2,12 @@ name: Check Documentation
 
 on:
   push:
+    branches: [ dev ]
     paths:
       - '**/*.md'
       - '.github/workflows/docs.yml'
   pull_request:
+    branches: [ dev ]
     paths:
       - '**/*.md'
       - '.github/workflows/docs.yml'
