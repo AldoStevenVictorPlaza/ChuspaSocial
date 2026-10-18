@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $observers = [
     [
-        'eventname' => \\core\\event\\user_graded::class,
+        'eventname' => \core\event\user_graded::class,
         'callback' => '\\local_chuspasocial\\local\\observer::user_graded',
     ],
 ];
