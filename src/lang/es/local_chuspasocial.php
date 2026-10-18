@@ -97,5 +97,5 @@ $string['sold'] = 'Vendido';
 $string['tagarea_local_chuspasocial_post'] = 'Publicaciones';
 $string['tags'] = 'Etiquetas';
 $string['unfollow'] = 'Dejar de seguir';
-$string['unfollowtag'] = 'Dejar de seguir etiqueta';x
+$string['unfollowtag'] = 'Dejar de seguir etiqueta';
 $string['wall'] = 'Muro';
