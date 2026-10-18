@@ -37,7 +37,7 @@ Almacena las publicaciones del muro general y de los cursos en ChuspaSocial.
 | `courseid` | INT(10) | No | ID del curso asociado. El valor `0` representa el muro general. |
 | `type` | CHAR(20) | No | Tipo de publicación. Valores permitidos: `post`, `announcement`, `activity`. |
 | `content` | TEXT | No | Contenido de la publicación. |
-| `contentformat` | INT(4) | No | Formato del contenido según las constantes `FORMAT_*` de Moodle. |
+| `contentformat` | INT(2) | No | Formato del contenido según las constantes `FORMAT_*` de Moodle. |
 | `hidden` | INT(1) | No | Indica si la publicación está oculta: `0` visible, `1` oculta. |
 | `timecreated` | INT(10) | No | Marca de tiempo Unix de creación. |
 | `timemodified` | INT(10) | No | Marca de tiempo Unix de la última modificación. |
