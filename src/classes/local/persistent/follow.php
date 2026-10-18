@@ -46,7 +46,7 @@ class follow extends \core\persistent {
      * @throws \invalid_persistent_exception Si el valor no es válido.
      */
     protected function validate_itemtype($value) {
-        $choices = array('user', 'course');
+        $choices = array('user', 'tag');
 
         if (!in_array($value, $choices)) {
             throw new \invalid_persistent_exception("El valor '$value' para itemtype está fuera de las opciones permitidas.");
