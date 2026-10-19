@@ -19,23 +19,32 @@
  *
  * @package    local_chuspasocial
  * @category   test
- * @copyright  2026 siacarahelen-sketch
+ * @copyright  2026 sis-inf
  * @license    http://gnu.org GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
+
+namespace local_chuspasocial\local;
+
+use advanced_testcase;
 
 /**
  * Clase de pruebas para el servicio de anuncios.
  *
  * @package    local_chuspasocial
  * @category   test
- * @copyright  2026 siacarahelen-sketch
+ * @copyright  2026 sis-inf
  * @license    http://gnu.org GNU GPL v3 or later
  * @covers     \local_chuspasocial\local\listing_service::delete_listing
  */
-class listing_service_test extends \advanced_testcase {
+class listing_service_test extends advanced_testcase {
 
+    /**
+     * Configuración inicial antes de cada prueba.
+     *
+     * @return void
+     */
     protected function setUp(): void {
         parent::setUp();
         $this->resetAfterTest(true);
@@ -94,13 +103,14 @@ class listing_service_test extends \advanced_testcase {
 
         $generator = $this->getDataGenerator();
         $author = $generator->create_user();
+        $course = $generator->create_course();
 
         $plugingenerator = $generator->get_plugin_generator('local_chuspasocial');
         $listing = $plugingenerator->create_listing(['userid' => $author->id]);
 
         $linkid = $DB->insert_record('local_chuspasocial_lstcourse', (object) [
             'listingid' => $listing->id,
-            'courseid' => 1,
+            'courseid' => $course->id,
             'timecreated' => time()
         ]);
 
