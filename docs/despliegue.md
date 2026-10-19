@@ -27,9 +27,9 @@ Una vez instalado, el administrador configura el plugin desde **Administración 
 | Ajuste | Variable | Descripción | Valor por defecto |
 | :--- | :--- | :--- | :--- |
 | Habilitar marketplace | `enablemarketplace` | Activa o desactiva el marketplace del plugin. | `1` (activado) |
-| Longitud máxima de publicación | `maxpostlength` | Cantidad máxima de caracteres por publicación. | `1000` |
-| Máximo de imágenes por publicación | `maxpostimages` | Cantidad máxima de imágenes por publicación. | `5` |
-| Publicaciones por página | `postsperpage` | Cantidad de publicaciones que se muestran por página. | `15` |
+| Longitud máxima de publicación | `maxpostlength` | Cantidad máxima de caracteres por publicación. | `2000` |
+| Máximo de imágenes por publicación | `maxpostimages` | Cantidad máxima de imágenes por publicación. | `4` |
+| Publicaciones por página | `postsperpage` | Cantidad de publicaciones que se muestran por página. | `20` |
 | Moneda | `currency` | Código de la moneda en que se expresan los precios. | `BOB` |
 ---
 
