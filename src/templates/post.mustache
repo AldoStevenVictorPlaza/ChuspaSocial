@@ -31,6 +31,8 @@
     * authorpictureurl - URL of the author profile picture.
     * timecreated - Unix timestamp of the post.
     * content - Post content, already formatted with format_text().
+    * postid - Id of this post, passed to the comments template.
+    * comments - List of comments, using the local_chuspasocial/comments context.
 
     Example context (json):
     {
@@ -38,7 +40,16 @@
         "authorname": "Ana Pérez",
         "authorpictureurl": "https://example.com/pix/u/f2.png",
         "timecreated": 1760000000,
-        "content": "<p>Vendo mi libro de Cálculo I, casi nuevo.</p>"
+        "content": "<p>Vendo mi libro de Cálculo I, casi nuevo.</p>",
+        "postid": 1,
+        "comments": [
+            {
+                "id": 10,
+                "authorname": "Luis Mamani",
+                "timecreated": 1760003600,
+                "content": "<p>¿Todavía está disponible?</p>"
+            }
+        ]
     }
 }}
 <article class="card mb-3 post-item" data-postid="{{id}}">
@@ -51,5 +62,6 @@
             </div>
         </div>
         <div class="card-text">{{{content}}}</div>
+        {{> local_chuspasocial/comments}}
     </div>
 </article>
