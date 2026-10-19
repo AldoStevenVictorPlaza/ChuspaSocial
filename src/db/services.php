@@ -37,6 +37,7 @@ $functions = [
     'methodname' => 'execute',
     'description' => 'Get the book listings of my courses or the listings that match a search.',
     'type' => 'read',
+    'ajax' => true,
 ],
 'local_chuspasocial_report_item' => [
     'classname' => '\\local_chuspasocial\\external\\report_item::class',
