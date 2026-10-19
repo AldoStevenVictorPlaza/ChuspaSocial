@@ -39,4 +39,18 @@ $functions = [
         'type' => 'write',
         'ajax' => true,
     ],
+    'local_chuspasocial_toggle_reaction' => [
+        'classname' => \local_chuspasocial\external\toggle_reaction::class,
+        'methodname' => 'execute',
+        'description' => 'Toggle reaction status for a post.',
+        'type' => 'write',
+        'ajax' => true,
+    ],
+    'local_chuspasocial_add_comment' => [
+        'classname' => \local_chuspasocial\external\add_comment::class,
+        'methodname' => 'execute',
+        'description' => 'Add a comment to a post.',
+        'type' => 'write',
+        'ajax' => true,
+    ],
 ];
