@@ -30,6 +30,10 @@ require_once($CFG->libdir . '/formslib.php');
 
 /**
  * Form for creating and editing posts.
+ *
+ * Custom data:
+ * - courseid: id of the course of the post, 0 for the general wall.
+ * - can_post_announcement: whether the user can mark the post as an announcement.
  */
 class post_form extends \moodleform {
     /**
@@ -37,6 +41,27 @@ class post_form extends \moodleform {
      */
     public function definition() {
         $mform = $this->_form;
+
+        $mform->addElement(
+            'editor',
+            'content',
+            get_string('postcontent', 'local_chuspasocial'),
+            null,
+            ['maxfiles' => 0]
+        );
+        $mform->setType('content', PARAM_RAW);
+
+        // Campo de etiquetas (tags) con autocompletado.
+        $mform->addElement(
+            'tags',
+            'tags',
+            get_string('tags', 'local_chuspasocial'),
+            ['itemtype' => 'local_chuspasocial_post', 'component' => 'local_chuspasocial']
+        );
+
+        $mform->addElement('hidden', 'courseid');
+        $mform->setType('courseid', PARAM_INT);
+        $mform->setDefault('courseid', $this->_customdata['courseid'] ?? 0);
 
         if (!empty($this->_customdata['can_post_announcement'])) {
             $mform->addElement(
@@ -47,28 +72,25 @@ class post_form extends \moodleform {
             $mform->setType('announcement', PARAM_BOOL);
         }
 
-        // Selector de imágenes (filemanager).
-        $mform->addElement(
-            'filemanager',
-            'images',
-            'Imágenes',
-            null,
-            [
-                'accepted_types' => ['jpg', 'png', 'webp'],
-                'maxfiles' => get_config('local_chuspasocial', 'maxpostimages'),
-                'subdirs' => false,
-                'return_types' => FILE_INTERNAL | FILE_EXTERNAL,
-            ]
-        );
+        $this->add_action_buttons(true, get_string('publish', 'local_chuspasocial'));
+    }
 
-        // Campo de tags con autocompletado.
-        $mform->addElement(
-            'tags',
-            'tags',
-            get_string('tags', 'local_chuspasocial'),
-            ['itemtype' => 'local_chuspasocial_post', 'component' => 'local_chuspasocial']
-        );
+    /**
+     * Validates that the content of the post is not empty.
+     *
+     * @param array $data Submitted data.
+     * @param array $files Submitted files.
+     * @return array Errors, indexed by the name of the field.
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
 
-        $this->add_action_buttons();
+        $text = $data['content']['text'] ?? '';
+        $text = html_entity_decode(strip_tags($text), ENT_QUOTES, 'UTF-8');
+        if (trim($text, " \t\n\r\0\x0B\xC2\xA0") === '') {
+            $errors['content'] = get_string('errorpostempty', 'local_chuspasocial');
+        }
+
+        return $errors;
     }
 }
