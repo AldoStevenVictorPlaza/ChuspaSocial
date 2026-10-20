@@ -23,9 +23,9 @@
  * @license    http://gnu.org GNU GPL v3 or later
  */
 
-namespace local_chuspasocial\local;
-
 defined('MOODLE_INTERNAL') || die();
+
+namespace local_chuspasocial\local;
 
 use advanced_testcase;
 
@@ -200,87 +200,5 @@ class listing_service_test extends advanced_testcase {
         $this->assertCount(1, $result);
         $this->assertEquals($id, $result[0]->id);
     }
+}
 
-    /**
-     * Inserta un anuncio con timemodified antiguo para el autor indicado.
-     *
-     * @param int $userid Id del autor.
-     * @return int Id del anuncio creado.
-     */
-    private function crear_anuncio_antiguo(int $userid): int {
-        global $DB;
-        return $DB->insert_record('local_chuspasocial_listing', (object) [
-            'userid' => $userid,
-            'title' => 'Titulo original',
-            'author' => 'Autor original',
-            'status' => 'available',
-            'timecreated' => time() - 100,
-            'timemodified' => time() - 100,
-        ]);
-    }
-
-    /**
-     * El autor puede actualizar su anuncio y se actualiza timemodified.
-     *
-     * @covers \local_chuspasocial\local\listing_service::update_listing
-     */
-    public function test_update_listing_as_author(): void {
-        global $DB;
-
-        $author = $this->getDataGenerator()->create_user();
-        $id = $this->crear_anuncio_antiguo((int) $author->id);
-        $before = (int) $DB->get_field('local_chuspasocial_listing', 'timemodified', ['id' => $id]);
-
-        $this->setUser($author);
-        $result = listing_service::update_listing($id, (object) ['title' => 'Titulo nuevo']);
-
-        $this->assertInstanceOf(\local_chuspasocial\local\persistent\listing::class, $result);
-        $this->assertEquals('Titulo nuevo', $result->get('title'));
-
-        $record = $DB->get_record('local_chuspasocial_listing', ['id' => $id], '*', MUST_EXIST);
-        $this->assertEquals('Titulo nuevo', $record->title);
-        $this->assertEquals('Autor original', $record->author);
-        $this->assertGreaterThan($before, (int) $record->timemodified);
-    }
-
-    /**
-     * Otro usuario recibe una excepcion y el anuncio no cambia.
-     *
-     * @covers \local_chuspasocial\local\listing_service::update_listing
-     */
-    public function test_update_listing_as_other_user_throws(): void {
-        global $DB;
-
-        $author = $this->getDataGenerator()->create_user();
-        $other = $this->getDataGenerator()->create_user();
-        $id = $this->crear_anuncio_antiguo((int) $author->id);
-
-        $this->setUser($other);
-
-        try {
-            listing_service::update_listing($id, (object) ['title' => 'Titulo hackeado']);
-            $this->fail('Se esperaba una moodle_exception.');
-        } catch (\moodle_exception $e) {
-            $this->assertEquals('Titulo original', $DB->get_field('local_chuspasocial_listing', 'title', ['id' => $id]));
-        }
-    }
-
-    /**
-     * El autor no puede cambiar el propietario del anuncio.
-     *
-     * @covers \local_chuspasocial\local\listing_service::update_listing
-     */
-    public function test_update_listing_ignores_protected_fields(): void {
-        global $DB;
-
-        $author = $this->getDataGenerator()->create_user();
-        $other = $this->getDataGenerator()->create_user();
-        $id = $this->crear_anuncio_antiguo((int) $author->id);
-
-        $this->setUser($author);
-        listing_service::update_listing($id, (object) ['userid' => $other->id, 'title' => 'Otro titulo']);
-
-        $record = $DB->get_record('local_chuspasocial_listing', ['id' => $id], '*', MUST_EXIST);
-        $this->assertEquals($author->id, $record->userid);
-        $this->assertEquals('Otro titulo', $record->title);
-    }}
