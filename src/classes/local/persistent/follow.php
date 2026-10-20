@@ -1,57 +1,66 @@
 <?php
-namespace local_chuspasocial\local\persistent;
-
-defined('MOODLE_INTERNAL') || die();
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Clase persistente para la entidad follow.
+ * Persistent class for the follows of ChuspaSocial.
  *
  * @package    local_chuspasocial
- * @copyright  2026 Jairo David Medrano Huanca
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2026 SIS-INF
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class follow extends \core\persistent {
 
-    /** @var string La tabla de la base de datos asociada. */
+namespace local_chuspasocial\local\persistent;
+
+use core\persistent;
+
+/**
+ * Persistent class for the local_chuspasocial_follow table.
+ *
+ * @package    local_chuspasocial
+ * @copyright  2026 SIS-INF
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class follow extends persistent {
+    /** Table name. */
     const TABLE = 'local_chuspasocial_follow';
 
     /**
-     * Definición de las propiedades de la persistencia alineadas con el modelo.
-     * 
+     * Defines the properties of the follow.
+     *
      * @return array
      */
-    protected static function define_properties() {
-        return array(
-            'userid' => array(
-                'type' => PARAM_INT,
-            ),
-            'itemtype' => array(
-                'type' => PARAM_ALPHA,
-            ),
-            'itemid' => array(
-                'type' => PARAM_INT,
-            ),
-            'timecreated' => array(
+    protected static function define_properties(): array {
+        return [
+            'userid' => [
                 'type' => PARAM_INT,
                 'default' => 0,
-            ),
-        );
-    }
-
-    /**
-     * Validador para el campo itemtype asegurando que esté dentro de las opciones permitidas.
-     * 
-     * @param string $value El valor a validar.
-     * @return true
-     * @throws \invalid_persistent_exception Si el valor no es válido.
-     */
-    protected function validate_itemtype($value) {
-        $choices = array('user', 'tag');
-
-        if (!in_array($value, $choices)) {
-            throw new \invalid_persistent_exception("El valor '$value' para itemtype está fuera de las opciones permitidas.");
-        }
-
-        return true;
+            ],
+            'itemtype' => [
+                'type' => PARAM_ALPHA,
+                'choices' => ['user', 'tag'],
+                'default' => 'user',
+            ],
+            'itemid' => [
+                'type' => PARAM_INT,
+                'default' => 0,
+            ],
+            'timecreated' => [
+                'type' => PARAM_INT,
+                'default' => 0,
+            ],
+        ];
     }
 }
