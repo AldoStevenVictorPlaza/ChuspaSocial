@@ -51,14 +51,6 @@ class post_form extends \moodleform {
         );
         $mform->setType('content', PARAM_RAW);
 
-        // Campo de etiquetas (tags) con autocompletado.
-        $mform->addElement(
-            'tags',
-            'tags',
-            get_string('tags', 'local_chuspasocial'),
-            ['itemtype' => 'local_chuspasocial_post', 'component' => 'local_chuspasocial']
-        );
-
         $mform->addElement('hidden', 'courseid');
         $mform->setType('courseid', PARAM_INT);
         $mform->setDefault('courseid', $this->_customdata['courseid'] ?? 0);
@@ -71,6 +63,14 @@ class post_form extends \moodleform {
             );
             $mform->setType('announcement', PARAM_BOOL);
         }
+
+        // Campo de tags con autocompletado.
+        $mform->addElement(
+            'tags',
+            'tags',
+            get_string('tags', 'local_chuspasocial'),
+            ['itemtype' => 'local_chuspasocial_post', 'component' => 'local_chuspasocial']
+        );
 
         $this->add_action_buttons(true, get_string('publish', 'local_chuspasocial'));
     }
