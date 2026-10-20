@@ -69,6 +69,10 @@
             <KEYS>
               <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
+            <INDEXES>
+                <INDEX NAME="listingid_courseid" UNIQUE="true" FIELDS="listingid, courseid"/>
+                <INDEX NAME="courseid" UNIQUE="false" FIELDS="courseid"/>
+            </INDEXES>
         </TABLE>
         <TABLE NAME="local_chuspasocial_report" COMMENT="Reportes de contenido de ChuspaSocial">
             <FIELDS>
