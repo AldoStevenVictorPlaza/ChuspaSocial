@@ -20,10 +20,15 @@
     Wall template for local_chuspasocial.
 
     Context variables required for this template:
-    * none
+    * posts - List of posts. Empty or omitted when there are no posts.
 
     Example context (json):
-    {}
+    {
+        "posts": []
+    }
 }}
 <div class="local_chuspasocial_wall" data-region="wall">
+    {{^posts}}
+    <p class="text-muted" data-region="wall-empty">Aún no hay publicaciones</p>
+    {{/posts}}
 </div>
