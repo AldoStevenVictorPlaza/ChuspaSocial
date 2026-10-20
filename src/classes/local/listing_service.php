@@ -144,4 +144,5 @@ class listing_service {
         $listing->update();
 
         return $listing;
-    }}
+    }
+}
