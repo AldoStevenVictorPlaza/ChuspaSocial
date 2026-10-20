@@ -103,6 +103,10 @@
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
+            <INDEXES>
+                <INDEX NAME="status_timecreated" UNIQUE="false" FIELDS="status, timecreated"/>
+                <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+            </INDEXES>
         </TABLE>
     </TABLES>
 </XMLDB>
