@@ -24,6 +24,9 @@
 
 namespace local_chuspasocial\local;
 
+use local_chuspasocial\local\persistent\listing;
+use moodle_exception;
+
 /**
  * Service class for book listings.
  */
@@ -108,4 +111,37 @@ class listing_service {
 
         return $currency . ' ' . format_float($price, 2);
     }
-}
+
+    /**
+     * Updates a listing. Only the author can edit it.
+     *
+     * The persistent updates timemodified and usermodified on its own.
+     *
+     * @param int $listingid ID of the listing to update.
+     * @param \stdClass $data Fields to update.
+     * @return listing The updated listing.
+     * @throws moodle_exception If the current user is not the author.
+     */
+    public static function update_listing(int $listingid, \stdClass $data): listing {
+        global $USER;
+
+        $listing = new listing($listingid);
+
+        if ((int) $listing->get('userid') !== (int) $USER->id) {
+            throw new moodle_exception('nopermissions', 'error', '', 'edit this listing');
+        }
+
+        // Fields the author is not allowed to change.
+        $protected = ['id', 'userid', 'timecreated', 'timemodified', 'usermodified'];
+        $definition = listing::properties_definition();
+
+        foreach ((array) $data as $field => $value) {
+            if (!in_array($field, $protected, true) && isset($definition[$field])) {
+                $listing->set($field, $value);
+            }
+        }
+
+        $listing->update();
+
+        return $listing;
+    }}
