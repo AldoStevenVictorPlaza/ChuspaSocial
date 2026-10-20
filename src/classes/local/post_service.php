@@ -210,4 +210,20 @@ class post_service {
 
         return $postid;
     }
+
+    /**
+     * Comprueba si el usuario actual puede publicar anuncios oficiales.
+     *
+     * @param int $courseid ID del curso, o 0 para el contexto del sistema.
+     * @return bool true si tiene la capacidad, false en caso contrario.
+     */
+    public static function can_post_announcement(int $courseid): bool {
+        if ($courseid > 0) {
+            $context = \context_course::instance($courseid);
+        } else {
+            $context = \context_system::instance();
+        }
+
+        return has_capability('local/chuspasocial:postannouncement', $context);
+    }
 }
