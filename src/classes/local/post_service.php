@@ -143,7 +143,7 @@ class post_service {
         // Registrar el evento despues de confirmar la transaccion.
         $event->trigger();
     }
-    
+
     public static function create_post(string $content, int $format, string $type = 'post'): int {
         global $USER, $DB;
 
@@ -163,5 +163,26 @@ class post_service {
         $record->timemodified = time();
 
         return $DB->insert_record('local_chuspasocial_post', $record);
+    }
+
+    /**
+     * Obtiene las publicaciones visibles de una materia.
+     *
+     * @param int $courseid ID de la materia.
+     * @param int $page Numero de pagina (base 0).
+     * @param int $perpage Publicaciones por pagina.
+     * @return array Lista de publicaciones, las mas recientes primero.
+     */
+    public static function get_course_feed(int $courseid, int $page, int $perpage): array {
+        global $DB;
+
+        return array_values($DB->get_records(
+            'local_chuspasocial_post',
+            ['courseid' => $courseid, 'hidden' => 0],
+            'timecreated DESC, id DESC',
+            '*',
+            $page * $perpage,
+            $perpage
+        ));
     }
 }
