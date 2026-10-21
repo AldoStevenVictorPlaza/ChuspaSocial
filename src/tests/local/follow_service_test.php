@@ -49,4 +49,19 @@ class follow_service_test extends \advanced_testcase {
             'itemid' => $tag->id,
         ]));
     }
+
+    public function test_unfollow_tag_inexistente(): void {
+        global $DB;
+
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+
+        // Dejar de seguir un tag que no existe no debe fallar ni crear datos.
+        follow_service::unfollow_tag(999999);
+
+        $this->assertEquals(0, $DB->count_records('local_chuspasocial_follow', [
+            'userid' => $user->id,
+            'itemtype' => 'tag',
+        ]));
+    }
 }
