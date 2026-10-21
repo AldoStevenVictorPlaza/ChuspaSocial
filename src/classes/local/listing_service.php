@@ -24,6 +24,9 @@
 
 namespace local_chuspasocial\local;
 
+use local_chuspasocial\local\persistent\listing;
+use moodle_exception;
+
 /**
  * Service class for book listings.
  */
@@ -107,5 +110,44 @@ class listing_service {
         }
 
         return $currency . ' ' . format_float($price, 2);
+    }
+
+    /**
+     * Creates a listing for the current user.
+     *
+     * Requires the createlisting capability and the marketplace setting enabled.
+     *
+     * @param \stdClass $data Fields of the listing.
+     * @return listing The created listing.
+     * @throws moodle_exception If the marketplace is disabled.
+     * @throws \invalid_parameter_exception If the price is negative.
+     */
+    public static function create_listing(\stdClass $data): listing {
+        global $USER;
+
+        if (!get_config('local_chuspasocial', 'enablemarketplace')) {
+            throw new moodle_exception('nopermissions', 'error', '', 'create a listing');
+        }
+
+        require_capability('local/chuspasocial:createlisting', \context_system::instance());
+
+        if (isset($data->price) && (float) $data->price < 0) {
+            throw new \invalid_parameter_exception('The price must be greater than or equal to 0');
+        }
+
+        // Fields the author is not allowed to set.
+        $protected = ['id', 'userid', 'timecreated', 'timemodified', 'usermodified'];
+        $definition = listing::properties_definition();
+
+        $listing = new listing();
+        foreach ((array) $data as $field => $value) {
+            if (!in_array($field, $protected, true) && isset($definition[$field])) {
+                $listing->set($field, $value);
+            }
+        }
+        $listing->set('userid', (int) $USER->id);
+        $listing->create();
+
+        return $listing;
     }
 }
