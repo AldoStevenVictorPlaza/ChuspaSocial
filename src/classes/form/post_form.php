@@ -64,6 +64,20 @@ class post_form extends \moodleform {
             $mform->setType('announcement', PARAM_BOOL);
         }
 
+        // Selector de im├ígenes (filemanager).
+        $mform->addElement(
+            'filemanager',
+            'images',
+            get_string('postimages', 'local_chuspasocial'),
+            null,
+            [
+                'accepted_types' => ['jpg', 'png', 'webp'],
+                'maxfiles' => (int) get_config('local_chuspasocial', 'maxpostimages') ?: 5,
+                'subdirs' => false,
+                'return_types' => FILE_INTERNAL | FILE_EXTERNAL,
+            ]
+        );
+
         // Campo de tags con autocompletado.
         $mform->addElement(
             'tags',
