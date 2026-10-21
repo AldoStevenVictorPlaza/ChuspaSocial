@@ -42,4 +42,27 @@ class follow_service {
             message_send($message);
         }
     }
+
+        /**
+     * Convierte registros de usuario en arreglos con nombre y foto.
+     *
+     * @param array $records Registros de usuario obtenidos de la base de datos.
+     * @return array Lista de usuarios con id, fullname y profileimageurl.
+     */
+    private static function format_users(array $records): array {
+        global $PAGE;
+
+        $users = [];
+        foreach ($records as $user) {
+            $userpicture = new \user_picture($user);
+            $userpicture->size = 1;
+
+            $users[] = [
+                'id'              => (int) $user->id,
+                'fullname'        => fullname($user),
+                'profileimageurl' => $userpicture->get_url($PAGE)->out(false),
+            ];
+        }
+        return $users;
+    }
 }
