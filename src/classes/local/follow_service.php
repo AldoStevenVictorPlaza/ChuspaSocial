@@ -51,4 +51,19 @@ class follow_service {
             message_send($message);
         }
     }
+
+    /**
+     * Deja de seguir a un usuario.
+     *
+     * @param int $userid ID del usuario que se quiere dejar de seguir.
+     */
+    public static function unfollow_user(int $userid): void {
+        global $DB, $USER;
+
+        $DB->delete_records('local_chuspasocial_follow', [
+            'userid'   => $USER->id,
+            'itemtype' => 'user',
+            'itemid'   => $userid,
+        ]);
+    }
 }
