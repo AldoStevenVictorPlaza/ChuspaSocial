@@ -26,6 +26,8 @@ namespace local_chuspasocial\external;
 
 use context_system;
 use core\external\exporter;
+use core_tag_tag;
+use moodle_url;
 use renderer_base;
 use user_picture;
 
@@ -105,6 +107,20 @@ class post_exporter extends exporter {
                 'type' => PARAM_BOOL,
                 'description' => 'Whether the current user can delete the post (the author or a moderator).',
             ],
+            'tags' => [
+                'type' => [
+                    'name' => [
+                        'type' => PARAM_TEXT,
+                        'description' => 'Name of the tag.',
+                    ],
+                    'url' => [
+                        'type' => PARAM_URL,
+                        'description' => 'URL of tag.php with the posts of the tag.',
+                    ],
+                ],
+                'multiple' => true,
+                'description' => 'Tags of the post.',
+            ],
         ];
     }
 
@@ -133,6 +149,26 @@ class post_exporter extends exporter {
             'authorpictureurl' => $picture->get_url($output->get_page())->out(false),
             'canedit' => $isauthor,
             'candelete' => $isauthor || $ismoderator,
+            'tags' => $this->get_tags(),
         ];
+    }
+
+    /**
+     * Get the tags of the post, each one with its name and the URL of tag.php.
+     *
+     * @return array List of tags.
+     */
+    protected function get_tags(): array {
+        $tags = [];
+        $items = core_tag_tag::get_item_tags('local_chuspasocial', 'local_chuspasocial_post', $this->data->id);
+        foreach ($items as $tag) {
+            $url = new moodle_url('/local/chuspasocial/tag.php', ['tag' => $tag->name]);
+            $tags[] = [
+                'name' => $tag->get_display_name(false),
+                'url' => $url->out(false),
+            ];
+        }
+
+        return $tags;
     }
 }
