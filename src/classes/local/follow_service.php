@@ -96,4 +96,35 @@ class follow_service {
 
         return self::format_users($records);
     }
+
+        /**
+     * Obtiene los usuarios que sigue un usuario, paginados.
+     *
+     * @param int $userid ID del usuario del que se quieren ver los seguidos.
+     * @param int $page Numero de pagina, empezando en 0.
+     * @param int $perpage Cantidad de usuarios por pagina.
+     * @return array Lista de usuarios con id, fullname y profileimageurl.
+     */
+    public static function get_following(int $userid, int $page, int $perpage): array {
+        global $DB;
+
+        $sql = "SELECT u.id, u.firstname, u.lastname, u.firstnamephonetic,
+                       u.lastnamephonetic, u.middlename, u.alternatename,
+                       u.picture, u.imagealt, u.email
+                  FROM {local_chuspasocial_follow} f
+                  JOIN {user} u ON u.id = f.itemid
+                 WHERE f.itemtype = :itemtype
+                   AND f.userid = :userid
+                   AND u.deleted = 0
+              ORDER BY f.id DESC";
+
+        $params = [
+            'itemtype' => 'user',
+            'userid'   => $userid,
+        ];
+
+        $records = $DB->get_records_sql($sql, $params, $page * $perpage, $perpage);
+
+        return self::format_users($records);
+    }
 }
