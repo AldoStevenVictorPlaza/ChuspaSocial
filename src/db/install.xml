@@ -89,6 +89,10 @@
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
+                <INDEXES>
+                <INDEX NAME="status" UNIQUE="false" FIELDS="status"/>
+                <INDEX NAME="itemtype_itemid" UNIQUE="false" FIELDS="itemtype, itemid"/>
+            </INDEXES>
         </TABLE>
         <TABLE NAME="local_chuspasocial_listing" COMMENT="Anuncios de libros del marketplace">
             <FIELDS>
