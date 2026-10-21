@@ -111,6 +111,10 @@
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
+            <INDEXES>
+                <INDEX NAME="status_timecreated" UNIQUE="false" FIELDS="status, timecreated"/>
+                <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+            </INDEXES>
         </TABLE>
         <TABLE NAME="local_chuspasocial_follow" COMMENT="Usuarios y etiquetas que sigue cada usuario">
             <FIELDS>
