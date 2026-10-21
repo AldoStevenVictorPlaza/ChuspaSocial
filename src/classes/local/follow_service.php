@@ -43,7 +43,7 @@ class follow_service {
         }
     }
 
-        /**
+    /**
      * Convierte registros de usuario en arreglos con nombre y foto.
      *
      * @param array $records Registros de usuario obtenidos de la base de datos.
@@ -66,7 +66,7 @@ class follow_service {
         return $users;
     }
 
-        /**
+    /**
      * Obtiene los seguidores de un usuario, paginados.
      *
      * @param int $userid ID del usuario del que se quieren ver los seguidores.
@@ -97,7 +97,7 @@ class follow_service {
         return self::format_users($records);
     }
 
-        /**
+    /**
      * Obtiene los usuarios que sigue un usuario, paginados.
      *
      * @param int $userid ID del usuario del que se quieren ver los seguidos.
