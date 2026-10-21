@@ -7,25 +7,34 @@ use moodle_exception;
 
 class follow_service {
 
-    public static function follow_user(int $userfollowedid): void {
+    /**
+     * Sigue a un usuario.
+     *
+     * @param int $userid ID del usuario que se quiere seguir.
+     * @throws moodle_exception Si el usuario intenta seguirse a si mismo.
+     */
+    public static function follow_user(int $userid): void {
         global $DB, $USER;
 
-        if ($userfollowedid === (int) $USER->id) {
+        // No se permite seguirse a si mismo.
+        if ($userid === (int) $USER->id) {
             throw new moodle_exception('cannotfollowself', 'local_chuspasocial');
         }
 
+        // Verificar que el usuario a seguir exista.
+        $userfollowed = $DB->get_record('user', ['id' => $userid, 'deleted' => 0], '*', MUST_EXIST);
+
         $params = [
-            'userid'       => $USER->id,
-            'userfollowed' => $userfollowedid,
-            'itemtype'     => 'user'
+            'userid'   => $USER->id,
+            'itemtype' => 'user',
+            'itemid'   => $userid,
         ];
 
-        if (!$DB->record_exists('local_chuspasocial_follows', $params)) {
-            $record = (object)$params;
+        // No se permite seguir dos veces al mismo usuario.
+        if (!$DB->record_exists('local_chuspasocial_follow', $params)) {
+            $record = (object) $params;
             $record->timecreated = time();
-            $DB->insert_record('local_chuspasocial_follows', $record);
-
-            $userfollowed = $DB->get_record('user', ['id' => $userfollowedid], '*', MUST_EXIST);
+            $DB->insert_record('local_chuspasocial_follow', $record);
 
             $message = new \core\message\message();
             $message->component         = 'local_chuspasocial';
