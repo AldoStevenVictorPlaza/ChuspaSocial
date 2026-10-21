@@ -32,4 +32,21 @@ class follow_service_test extends \advanced_testcase {
         ]));
     }
 
+    public function test_unfollow_tag_valido(): void {
+        global $DB;
+
+        $generator = $this->getDataGenerator();
+        $user = $generator->create_user();
+        $tag = $generator->create_tag(['rawname' => 'moodle']);
+        $this->setUser($user);
+
+        follow_service::follow_tag((int) $tag->id);
+        follow_service::unfollow_tag((int) $tag->id);
+
+        $this->assertFalse($DB->record_exists('local_chuspasocial_follow', [
+            'userid' => $user->id,
+            'itemtype' => 'tag',
+            'itemid' => $tag->id,
+        ]));
+    }
 }
