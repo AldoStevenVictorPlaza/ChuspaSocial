@@ -26,6 +26,7 @@ namespace local_chuspasocial\external;
 
 use context_system;
 use core\external\exporter;
+use moodle_url;
 use renderer_base;
 use user_picture;
 
@@ -33,7 +34,7 @@ use user_picture;
  * Exports a post with the data that the templates and the web services need.
  *
  * Related data:
- * - context: the context of the post, used to format the content.
+ * - context: the context of the post, used to format the content and to find its images.
  * - author: the user record of the author of the post.
  * - reactions: number of reactions of the post.
  * - hasreacted: whether the current user has reacted to the post.
@@ -112,6 +113,20 @@ class post_exporter extends exporter {
                 'type' => PARAM_BOOL,
                 'description' => 'Whether the current user can delete the post (the author or a moderator).',
             ],
+            'images' => [
+                'type' => [
+                    'url' => [
+                        'type' => PARAM_URL,
+                        'description' => 'URL of the image in the postimage file area.',
+                    ],
+                    'filename' => [
+                        'type' => PARAM_FILE,
+                        'description' => 'File name of the image.',
+                    ],
+                ],
+                'multiple' => true,
+                'description' => 'Images of the post.',
+            ],
             'reactions' => [
                 'type' => PARAM_INT,
                 'description' => 'Number of reactions of the post.',
@@ -148,8 +163,44 @@ class post_exporter extends exporter {
             'authorpictureurl' => $picture->get_url($output->get_page())->out(false),
             'canedit' => $isauthor,
             'candelete' => $isauthor || $ismoderator,
+            'images' => $this->get_images(),
             'reactions' => $this->related['reactions'],
             'hasreacted' => $this->related['hasreacted'],
         ];
+    }
+
+    /**
+     * Get the URLs of the images stored in the postimage file area of the post.
+     *
+     * @return array List of images, each one with its url and filename.
+     */
+    protected function get_images(): array {
+        $fs = get_file_storage();
+        $files = $fs->get_area_files(
+            $this->related['context']->id,
+            'local_chuspasocial',
+            'postimage',
+            $this->data->id,
+            'filename',
+            false
+        );
+
+        $images = [];
+        foreach ($files as $file) {
+            $url = moodle_url::make_pluginfile_url(
+                $file->get_contextid(),
+                $file->get_component(),
+                $file->get_filearea(),
+                $file->get_itemid(),
+                $file->get_filepath(),
+                $file->get_filename()
+            );
+            $images[] = [
+                'url' => $url->out(false),
+                'filename' => $file->get_filename(),
+            ];
+        }
+
+        return $images;
     }
 }
