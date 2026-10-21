@@ -64,6 +64,14 @@ class post_form extends \moodleform {
             $mform->setType('announcement', PARAM_BOOL);
         }
 
+        // Campo de tags con autocompletado.
+        $mform->addElement(
+            'tags',
+            'tags',
+            get_string('tags', 'local_chuspasocial'),
+            ['itemtype' => 'local_chuspasocial_post', 'component' => 'local_chuspasocial']
+        );
+
         $this->add_action_buttons(true, get_string('publish', 'local_chuspasocial'));
     }
 
