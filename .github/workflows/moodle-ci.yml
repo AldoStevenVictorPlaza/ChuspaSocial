@@ -69,6 +69,12 @@ jobs:
         env:
           MOODLE_BRANCH: MOODLE_405_STABLE
 
+      - name: Run mustache
+        if: ${{ !cancelled() }}
+        run: moodle-plugin-ci mustache ./plugin/src
+        env:
+          MOODLE_BRANCH: MOODLE_405_STABLE
+
       - name: Validate upgrade savepoints
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci savepoints ./plugin/src
