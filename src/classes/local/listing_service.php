@@ -113,6 +113,79 @@ class listing_service {
     }
 
     /**
+     * Creates a listing for the current user.
+     *
+     * Requires the createlisting capability and the marketplace setting enabled.
+     *
+     * @param \stdClass $data Fields of the listing.
+     * @return listing The created listing.
+     * @throws moodle_exception If the marketplace is disabled.
+     * @throws \invalid_parameter_exception If the price is negative.
+     */
+    public static function create_listing(\stdClass $data): listing {
+        global $USER;
+
+        if (!get_config('local_chuspasocial', 'enablemarketplace')) {
+            throw new moodle_exception('nopermissions', 'error', '', 'create a listing');
+        }
+
+        require_capability('local/chuspasocial:createlisting', \context_system::instance());
+
+        if (isset($data->price) && (float) $data->price < 0) {
+            throw new \invalid_parameter_exception('The price must be greater than or equal to 0');
+        }
+
+        // Fields the author is not allowed to set.
+        $protected = ['id', 'userid', 'timecreated', 'timemodified', 'usermodified'];
+        $definition = listing::properties_definition();
+
+        $listing = new listing();
+        foreach ((array) $data as $field => $value) {
+            if (!in_array($field, $protected, true) && isset($definition[$field])) {
+                $listing->set($field, $value);
+            }
+        }
+        $listing->set('userid', (int) $USER->id);
+        $listing->create();
+
+        return $listing;
+    }
+    /**
+     * Replace the courses linked to a listing.
+     *
+     * All the current links of the listing in the lstcourse table are removed and
+     * a new link is added for each course. Repeated ids are linked only once.
+     * Every course must exist; if one does not exist, nothing is changed.
+     *
+     * @param int $listingid Id of the listing.
+     * @param array $courseids Ids of the courses to link to the listing.
+     * @throws \moodle_exception If a course does not exist.
+     */
+    public static function set_courses(int $listingid, array $courseids): void {
+        global $DB;
+
+        $courseids = array_values(array_unique(array_map('intval', $courseids)));
+
+        if (!empty($courseids)) {
+            [$insql, $params] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED, 'course');
+            $params['siteid'] = SITEID;
+            $existing = $DB->get_fieldset_select('course', 'id', "id $insql AND id <> :siteid", $params);
+            $missing = array_diff($courseids, array_map('intval', $existing));
+            if (!empty($missing)) {
+                throw new \moodle_exception('invalidcourseid', 'error', '', implode(', ', $missing));
+            }
+        }
+
+        $transaction = $DB->start_delegated_transaction();
+        $DB->delete_records('local_chuspasocial_lstcourse', ['listingid' => $listingid]);
+        $records = [];
+        foreach ($courseids as $courseid) {
+            $records[] = (object) ['listingid' => $listingid, 'courseid' => $courseid];
+        }
+        $DB->insert_records('local_chuspasocial_lstcourse', $records);
+        $transaction->allow_commit();
+    }
+        /**
      * Updates a listing. Only the author can edit it.
      *
      * The persistent updates timemodified and usermodified on its own.
@@ -131,7 +204,6 @@ class listing_service {
             throw new moodle_exception('nopermissions', 'error', '', 'edit this listing');
         }
 
-        // Fields the author is not allowed to change.
         $protected = ['id', 'userid', 'timecreated', 'timemodified', 'usermodified'];
         $definition = listing::properties_definition();
 
