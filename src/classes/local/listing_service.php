@@ -185,4 +185,54 @@ class listing_service {
         $DB->insert_records('local_chuspasocial_lstcourse', $records);
         $transaction->allow_commit();
     }
+        /**
+     * Updates a listing. Only the author can edit it.
+     *
+     * The persistent updates timemodified and usermodified on its own.
+     *
+     * @param int $listingid ID of the listing to update.
+     * @param \stdClass $data Fields to update.
+     * @return listing The updated listing.
+     * @throws moodle_exception If the current user is not the author.
+     */
+    public static function update_listing(int $listingid, \stdClass $data): listing {
+        global $USER;
+
+        $listing = new listing($listingid);
+
+        if ((int) $listing->get('userid') !== (int) $USER->id) {
+            throw new moodle_exception('nopermissions', 'error', '', 'edit this listing');
+        }
+
+        $protected = ['id', 'userid', 'timecreated', 'timemodified', 'usermodified'];
+        $definition = listing::properties_definition();
+
+        foreach ((array) $data as $field => $value) {
+            if (!in_array($field, $protected, true) && isset($definition[$field])) {
+                $listing->set($field, $value);
+            }
+        }
+
+        $listing->update();
+
+        return $listing;
+    }
+    /**
+     * Marks a listing as sold. Only the author can do it.
+     *
+     * @param int $listingid ID of the listing to mark as sold.
+     * @throws moodle_exception If the current user is not the author.
+     */
+    public static function mark_sold(int $listingid): void {
+        global $USER;
+
+        $listing = new listing($listingid);
+
+        if ((int) $listing->get('userid') !== (int) $USER->id) {
+            throw new moodle_exception('nopermissions', 'error', '', 'mark this listing as sold');
+        }
+
+        $listing->set('status', listing::STATUS_SOLD);
+        $listing->update();
+    }
 }

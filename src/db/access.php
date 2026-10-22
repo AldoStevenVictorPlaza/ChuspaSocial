@@ -75,6 +75,14 @@ $capabilities = array(
             'user' => CAP_ALLOW,
         ),
     ),
+    'local/chuspasocial:createlisting' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'user' => CAP_ALLOW,
+        ),
+        'riskbitmask' => RISK_SPAM,
+    ),
     'local/chuspasocial:post' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
