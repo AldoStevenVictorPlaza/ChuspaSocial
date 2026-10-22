@@ -210,4 +210,49 @@ class post_service {
 
         return $postid;
     }
+
+    /**
+     * Indica si un usuario puede ver una publicacion.
+     *
+     * - courseid 0 (muro general): requiere local/chuspasocial:view en el sistema.
+     * - courseid > 0: requiere estar inscrito o tener moodle/course:view.
+     * - Si la publicacion esta oculta: solo el autor o quien tenga local/chuspasocial:moderate.
+     *
+     * @param post $post Publicacion a consultar.
+     * @param int $userid Id del usuario que intenta verla.
+     * @return bool
+     */
+    public static function can_view(post $post, int $userid): bool {
+        $courseid = (int) $post->get('courseid');
+
+        if ($courseid === 0) {
+            // Muro general: se evalua en el contexto del sistema.
+            $context = \context_system::instance();
+            if (!has_capability('local/chuspasocial:view', $context, $userid)) {
+                return false;
+            }
+        } else {
+            // Publicacion de materia: solo inscritos o con acceso al curso.
+            $context = \context_course::instance($courseid, IGNORE_MISSING);
+            if (!$context) {
+                return false;
+            }
+            if (!is_enrolled($context, $userid, '', true)
+                    && !has_capability('moodle/course:view', $context, $userid)) {
+                return false;
+            }
+        }
+
+        // Publicacion oculta: solo el autor o un moderador.
+        if ((int) $post->get('hidden') === 1) {
+            if ((int) $post->get('userid') === $userid) {
+                return true;
+            }
+            // La capability puede no estar definida todavia (igual que en delete_post()).
+            return get_capability_info('local/chuspasocial:moderate')
+                && has_capability('local/chuspasocial:moderate', $context, $userid);
+        }
+
+        return true;
+    }
 }
