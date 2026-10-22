@@ -68,6 +68,42 @@ class follow_service {
     }
 
     /**
+     * Follows a tag.
+     *
+     * @param int $tagid Id of the tag to follow.
+     */
+    public static function follow_tag(int $tagid): void {
+        global $DB, $USER;
+
+        $params = [
+            'userid'   => $USER->id,
+            'itemtype' => 'tag',
+            'itemid'   => $tagid,
+        ];
+
+        if (!$DB->record_exists('local_chuspasocial_follow', $params)) {
+            $record = (object) $params;
+            $record->timecreated = time();
+            $DB->insert_record('local_chuspasocial_follow', $record);
+        }
+    }
+
+    /**
+     * Stops following a tag.
+     *
+     * @param int $tagid Id of the tag to unfollow.
+     */
+    public static function unfollow_tag(int $tagid): void {
+        global $DB, $USER;
+
+        $DB->delete_records('local_chuspasocial_follow', [
+            'userid'   => $USER->id,
+            'itemtype' => 'tag',
+            'itemid'   => $tagid,
+        ]);
+    }
+
+    /**
      * Convierte registros de usuario en arreglos con nombre y foto.
      *
      * @param array $records Registros de usuario obtenidos de la base de datos.
