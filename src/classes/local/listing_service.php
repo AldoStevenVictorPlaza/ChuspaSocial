@@ -149,6 +149,8 @@ class listing_service {
         $listing->create();
 
         return $listing;
+    }
+    /**
      * Replace the courses linked to a listing.
      *
      * All the current links of the listing in the lstcourse table are removed and
