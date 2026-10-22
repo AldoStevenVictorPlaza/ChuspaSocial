@@ -114,6 +114,34 @@ Campos de cada anuncio: `id` (id del anuncio), `userid` (id del vendedor), `titl
 * `required_capability_exception`: el usuario no tiene la capacidad `local/chuspasocial:view`.
 * `require_login`: el usuario no tiene sesión iniciada.
 
+### `local_chuspasocial_toggle_reaction`
+
+Permite reaccionar a una publicación o quitar la reacción sin necesidad de recargar la página.
+
+**Descripción:**  
+Alterna la reacción del usuario actual sobre una publicación (*post*): si todavía no reaccionó, agrega la reacción; si ya había reaccionado, la elimina.
+
+**Parámetros:**  
+* `postid` (int): ID de la publicación sobre la que se desea reaccionar o quitar la reacción.
+
+**Capacidades requeridas:**  
+* `local/chuspasocial:react` (en el contexto del curso de la publicación, o en el contexto del sistema si la publicación no pertenece a un curso).
+
+**Respuesta de ejemplo (JSON):**  
+```json
+{
+  "reacted": true
+}
+```
+
+`reacted` indica si la publicación quedó con la reacción del usuario: `true` si se agregó, `false` si se quitó.
+
+**Errores:**  
+* `invalid_parameter_exception`: `postid` no es un entero válido.
+* `dml_missing_record_exception`: no existe una publicación con ese `postid`.
+* `required_capability_exception`: el usuario no tiene la capacidad `local/chuspasocial:react`.
+* `require_login`: el usuario no tiene sesión iniciada.
+
 ## Errores
 
 Las funciones externas de Moodle no devuelven códigos HTTP tradicionales para errores de lógica de negocio. En su lugar, lanzan excepciones de tipo `moodle_exception` (o subclases como `invalid_parameter_exception`, `required_capability_exception`), que el cliente recibe como un objeto JSON con esta forma:
