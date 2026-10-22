@@ -26,6 +26,7 @@ namespace local_chuspasocial\external;
 
 use context_system;
 use core\external\exporter;
+use core_tag_tag;
 use moodle_url;
 use renderer_base;
 use user_picture;
@@ -127,6 +128,20 @@ class post_exporter extends exporter {
                 'multiple' => true,
                 'description' => 'Images of the post.',
             ],
+            'tags' => [
+                'type' => [
+                    'name' => [
+                        'type' => PARAM_TEXT,
+                        'description' => 'Name of the tag.',
+                    ],
+                    'url' => [
+                        'type' => PARAM_URL,
+                        'description' => 'URL of tag.php with the posts of the tag.',
+                    ],
+                ],
+                'multiple' => true,
+                'description' => 'Tags of the post.',
+            ],
             'reactions' => [
                 'type' => PARAM_INT,
                 'description' => 'Number of reactions of the post.',
@@ -164,6 +179,7 @@ class post_exporter extends exporter {
             'canedit' => $isauthor,
             'candelete' => $isauthor || $ismoderator,
             'images' => $this->get_images(),
+            'tags' => $this->get_tags(),
             'reactions' => $this->related['reactions'],
             'hasreacted' => $this->related['hasreacted'],
         ];
@@ -202,5 +218,24 @@ class post_exporter extends exporter {
         }
 
         return $images;
+    }
+
+    /**
+     * Get the tags of the post, each one with its name and the URL of tag.php.
+     *
+     * @return array List of tags.
+     */
+    protected function get_tags(): array {
+        $tags = [];
+        $items = core_tag_tag::get_item_tags('local_chuspasocial', 'local_chuspasocial_post', $this->data->id);
+        foreach ($items as $tag) {
+            $url = new moodle_url('/local/chuspasocial/tag.php', ['tag' => $tag->name]);
+            $tags[] = [
+                'name' => $tag->get_display_name(false),
+                'url' => $url->out(false),
+            ];
+        }
+
+        return $tags;
     }
 }
