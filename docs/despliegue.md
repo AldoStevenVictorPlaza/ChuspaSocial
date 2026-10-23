@@ -81,10 +81,12 @@ El muro guarda las imágenes en el área de archivos de Moodle, dentro de `moodl
 
 1. Que `moodledata` esté **fuera** del directorio público del sitio.
 2. Que el usuario del servidor web (por ejemplo `www-data`) sea el propietario y pueda escribir:
+
    ```text
    ls -ld /var/www/moodledata
    sudo -u www-data test -w /var/www/moodledata && echo "moodledata con escritura para www-data"
    ```
+
    Si el segundo comando no imprime el mensaje, corrija el propietario o los permisos antes de continuar; la instalación y las subidas del muro fallan sin escritura en `moodledata`.
 3. Que **Administración del sitio** > **Notificaciones** no muestre advertencias sobre la carpeta de datos.
 
