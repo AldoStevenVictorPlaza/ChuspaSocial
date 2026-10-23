@@ -151,6 +151,44 @@ Alterna la reacción del usuario actual sobre una publicación (*post*): si toda
 * `required_capability_exception`: el usuario no tiene la capacidad `local/chuspasocial:react`.
 * `require_login`: el usuario no tiene sesión iniciada.
 
+### `local_chuspasocial_add_comment`
+
+Permite comentar una publicación sin necesidad de recargar la página.
+
+**Descripción:**  
+Agrega un comentario del usuario actual a una publicación (*post*) y devuelve el comentario creado.
+
+**Parámetros:**  
+
+* `postid` (int): ID de la publicación que se desea comentar.
+* `content` (string): Contenido del comentario. Se recibe como `PARAM_RAW_TRIMMED`, es decir, se conserva el texto tal cual pero se eliminan los espacios al inicio y al final.
+
+**Capacidades requeridas:**  
+
+* `local/chuspasocial:comment` (en el contexto del curso de la publicación, o en el contexto del sistema si la publicación no pertenece a un curso).
+
+**Respuesta de ejemplo (JSON):**  
+
+```json
+{
+  "id": 14,
+  "postid": 7,
+  "userid": 3,
+  "content": "Muy buena publicacion.",
+  "contentformat": 2,
+  "timecreated": 1760000500
+}
+```
+
+Campos devueltos: `id` (id del comentario creado), `postid` (id de la publicación comentada), `userid` (id del autor del comentario), `content` (contenido del comentario), `contentformat` (formato del contenido; `FORMAT_PLAIN` si no se especifica) y `timecreated` (marca de tiempo Unix de creación).
+
+**Errores:**  
+
+* `invalid_parameter_exception`: `postid` no es un entero válido o `content` no cumple la validación.
+* `dml_missing_record_exception`: no existe una publicación con ese `postid`.
+* `required_capability_exception`: el usuario no tiene la capacidad `local/chuspasocial:comment`.
+* `require_login`: el usuario no tiene sesión iniciada.
+
 ## Errores
 
 Las funciones externas de Moodle no devuelven códigos HTTP tradicionales para errores de lógica de negocio. En su lugar, lanzan excepciones de tipo `moodle_exception` (o subclases como `invalid_parameter_exception`, `required_capability_exception`), que el cliente recibe como un objeto JSON con esta forma:
