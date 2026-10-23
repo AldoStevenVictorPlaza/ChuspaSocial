@@ -21,6 +21,21 @@ Esta limitación genera las siguientes consecuencias en la comunidad educativa:
 
 ## Alcance
 
+ChuspaSocial incluye las siguientes funcionalidades dentro de Moodle 4.5:
+
+* **Muro:** cada materia tiene su propio muro y existe un muro general. Los usuarios publican, adjuntan imágenes, eliminan sus propias publicaciones y cargan más publicaciones a medida que avanzan, viendo primero las más recientes.
+* **Comentarios:** los usuarios comentan las publicaciones, ven los comentarios de cada una y pueden eliminar los suyos.
+* **Reacciones:** los usuarios reaccionan a una publicación y ven el número de reacciones que recibió.
+* **Tags:** las publicaciones se etiquetan y el muro se filtra por tag, lo que permite organizar las noticias por categorías.
+* **Seguidores:** los usuarios siguen a otros usuarios, ven sus listas de seguidores y seguidos, consultan el perfil social de cada persona y tienen un feed personalizado.
+* **Anuncios oficiales:** los docentes publican anuncios en el muro de su materia, se pueden publicar anuncios institucionales en el muro general y ambos se destacan visualmente frente al resto de las publicaciones.
+* **Actividad de Moodle:** el muro de la materia muestra las tareas nuevas. Cuando se publica una calificación, el estudiante calificado recibe un aviso privado que nunca es público.
+* **Notificaciones:** el usuario recibe un aviso cuando alguien comenta su publicación y cuando obtiene un nuevo seguidor.
+* **Reportes:** los usuarios reportan publicaciones, comentarios o anuncios de libros, y los responsables revisan la cola de reportes para mantener el orden.
+* **Marketplace de libros:** los usuarios publican anuncios con título, autor, descripción, precio y fotos, y los vinculan a una o más materias. Los demás ven los libros de sus materias, buscan por título o autor y contactan al vendedor por la mensajería de Moodle, con un contacto externo opcional. El vendedor puede editar o eliminar su anuncio y marcarlo como vendido.
+
+Además, el administrador puede activar o desactivar el marketplace y configurar los límites del muro.
+
 ## Fuera de alcance
 
 ## Métricas de éxito
