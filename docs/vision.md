@@ -23,6 +23,13 @@ Esta limitación genera las siguientes consecuencias en la comunidad educativa:
 
 ## Fuera de alcance
 
+Para mantener el proyecto enfocado y entregable, los siguientes elementos **no** forman parte de ChuspaSocial en esta etapa:
+
+- **Pagos en línea:** el plugin no procesará transacciones, cobros ni suscripciones. El intercambio económico del marketplace de libros se coordina fuera de la plataforma.
+- **Aplicación móvil nativa:** no se desarrollarán aplicaciones propias para Android ni iOS. El acceso desde dispositivos móviles se hace mediante el navegador o la aplicación oficial de Moodle.
+- **Chat en tiempo real propio:** no se implementará un sistema de mensajería instantánea. La interacción entre usuarios se limita a comentarios, reacciones y notificaciones.
+- **Publicación en redes externas:** el contenido del muro no se publicará ni se sincronizará automáticamente con redes sociales de terceros.
+
 ## Métricas de éxito
 
 Para saber si ChuspaSocial cumple su objetivo, se medirán los siguientes indicadores con datos que ya registran Moodle y las tablas del plugin (`local_chuspasocial_*`):
