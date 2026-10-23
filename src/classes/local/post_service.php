@@ -1,8 +1,20 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace local_chuspasocial\local;
-
-defined('MOODLE_INTERNAL') || die();
 
 use core_tag_tag;
 use local_chuspasocial\local\persistent\post;
@@ -11,10 +23,11 @@ use moodle_exception;
 /**
  * Servicio para la gestion de publicaciones (posts).
  *
- * @package local_chuspasocial
+ * @package    local_chuspasocial
+ * @copyright  2026 SIS-INF
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class post_service {
-
     /**
      * Actualiza el contenido y formato de un post existente.
      *
@@ -22,9 +35,16 @@ class post_service {
      * @param string $content Nuevo contenido.
      * @param int $format Formato del contenido.
      * @param array $tags Tags de la publicacion.
+     * @param int $draftitemid Draft area itemid with the images of the post (0 = no changes).
      * @throws moodle_exception Si el usuario actual no es el autor.
      */
-    public static function update_post(int $postid, string $content, int $format, array $tags = []): void {
+    public static function update_post(
+        int $postid,
+        string $content,
+        int $format,
+        array $tags = [],
+        int $draftitemid = 0
+    ): void {
         global $USER;
 
         // Instanciar la publicacion existente.
@@ -43,7 +63,7 @@ class post_service {
 
         // Actualizar los datos.
         $post->set('content', $content);
-        $post->set('format', $format);
+        $post->set('contentformat', $format);
         $post->set('timemodified', time());
         $post->set('usermodified', $USER->id);
 
@@ -65,6 +85,9 @@ class post_service {
             $context,
             $tags
         );
+
+        // Save the images of the post.
+        self::save_post_images($draftitemid, $context, $postid);
     }
 
     /**
@@ -159,7 +182,6 @@ class post_service {
 
             // Confirmar los cambios de la base de datos.
             $transaction->allow_commit();
-
         } catch (\Throwable $e) {
             // Revertir los cambios de la transaccion si hay un error.
             $transaction->rollback($e);
@@ -168,7 +190,7 @@ class post_service {
         // Registrar el evento despues de confirmar la transaccion.
         $event->trigger();
     }
-    
+
     /**
      * Crea una publicacion.
      *
@@ -176,9 +198,16 @@ class post_service {
      * @param int $format Formato del contenido.
      * @param string $type Tipo de publicacion.
      * @param array $tags Tags de la publicacion.
+     * @param int $draftitemid Draft area itemid with the images of the post (0 = no images).
      * @return int ID de la publicacion creada.
      */
-    public static function create_post(string $content, int $format, string $type = 'post', array $tags = []): int {
+    public static function create_post(
+        string $content,
+        int $format,
+        string $type = 'post',
+        array $tags = [],
+        int $draftitemid = 0
+    ): int {
         global $USER, $DB;
 
         $context = \context_system::instance();
@@ -208,7 +237,36 @@ class post_service {
             $tags
         );
 
+        // Save the images of the post.
+        self::save_post_images($draftitemid, $context, $postid);
+
         return $postid;
+    }
+
+    /**
+     * Save the images of a draft area in the postimage file area of the post.
+     *
+     * @param int $draftitemid Draft area itemid with the images (0 = nothing to save).
+     * @param \context $context Context of the post.
+     * @param int $postid Id of the post, used as itemid of the file area.
+     */
+    private static function save_post_images(int $draftitemid, \context $context, int $postid): void {
+        if (empty($draftitemid)) {
+            return;
+        }
+
+        file_save_draft_area_files(
+            $draftitemid,
+            $context->id,
+            'local_chuspasocial',
+            'postimage',
+            $postid,
+            [
+                'accepted_types' => ['jpg', 'png', 'webp'],
+                'maxfiles' => (int) get_config('local_chuspasocial', 'maxpostimages') ?: 5,
+                'subdirs' => false,
+            ]
+        );
     }
 
     /**
@@ -237,8 +295,10 @@ class post_service {
             if (!$context) {
                 return false;
             }
-            if (!is_enrolled($context, $userid, '', true)
-                    && !has_capability('moodle/course:view', $context, $userid)) {
+            if (
+                !is_enrolled($context, $userid, '', true)
+                && !has_capability('moodle/course:view', $context, $userid)
+            ) {
                 return false;
             }
         }
