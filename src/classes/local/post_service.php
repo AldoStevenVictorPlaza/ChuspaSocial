@@ -370,4 +370,78 @@ class post_service {
             $perpage
         ));
     }
+
+    /**
+     * Obtiene el feed personalizado: publicaciones de usuarios y tags que sigo.
+     *
+     * Solo incluye publicaciones que el usuario puede ver segun la misma regla
+     * que can_view(): muro general con capacidad, o materias donde esta inscrito.
+     *
+     * @param int $page Numero de pagina (base 0).
+     * @param int $perpage Publicaciones por pagina.
+     * @return array Lista de publicaciones, las mas recientes primero.
+     */
+    public static function get_personal_feed(int $page, int $perpage): array {
+        global $DB, $USER;
+
+        $context = \context_system::instance();
+
+        $params = [
+            'viewer1' => $USER->id,
+            'usertype' => 'user',
+            'viewer2' => $USER->id,
+            'tagtype' => 'tag',
+            'component' => 'local_chuspasocial',
+            'itemtype' => 'local_chuspasocial_post',
+        ];
+
+        // Visibilidad por curso, igual que can_view().
+        $visible = [];
+        if (has_capability('local/chuspasocial:view', $context)) {
+            $visible[] = 'p.courseid = 0';
+        }
+        if (has_capability('moodle/course:view', $context)) {
+            $visible[] = 'p.courseid > 0 AND EXISTS (
+                SELECT 1 FROM {course} c WHERE c.id = p.courseid
+            )';
+        } else {
+            $courseids = array_keys(enrol_get_my_courses('id'));
+            if (!empty($courseids)) {
+                [$insql, $inparams] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED, 'cid');
+                $visible[] = "p.courseid $insql";
+                $params += $inparams;
+            }
+        }
+        if (empty($visible)) {
+            return [];
+        }
+        $visiblesql = '(' . implode(') OR (', $visible) . ')';
+
+        $sql = "SELECT p.*
+                  FROM {local_chuspasocial_post} p
+                 WHERE p.hidden = 0
+                   AND ($visiblesql)
+                   AND (
+                       EXISTS (
+                           SELECT 1
+                             FROM {local_chuspasocial_follow} fu
+                            WHERE fu.userid = :viewer1
+                              AND fu.itemtype = :usertype
+                              AND fu.itemid = p.userid
+                       )
+                       OR EXISTS (
+                           SELECT 1
+                             FROM {local_chuspasocial_follow} ft
+                             JOIN {tag_instance} ti ON ti.tagid = ft.itemid
+                            WHERE ft.userid = :viewer2
+                              AND ft.itemtype = :tagtype
+                              AND ti.component = :component
+                              AND ti.itemtype = :itemtype
+                              AND ti.itemid = p.id
+                       )
+                   )
+              ORDER BY p.timecreated DESC, p.id DESC";
+
+        return array_values($DB->get_records_sql($sql, $params, $page * $perpage, $perpage));
+    }
 }
