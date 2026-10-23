@@ -24,6 +24,7 @@
 
     Data attributes required for JS:
     * data-postid
+    * data-action=report
 
     Context variables required for this template:
     * id - Post id.
@@ -70,6 +71,10 @@
             </div>
         </div>
         <div class="card-text">{{{content}}}</div>
+        <button type="button" class="btn btn-link mt-2" data-action="report" data-postid="{{id}}"
+                aria-label="{{#str}} chuspasocial:report, local_chuspasocial {{/str}}">
+            {{#str}} chuspasocial:report, local_chuspasocial {{/str}}
+        </button>
         {{> local_chuspasocial/comments}}
     </div>
 </article>
