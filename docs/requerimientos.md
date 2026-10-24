@@ -413,6 +413,7 @@
 |---|---|---|---|
 | RF-029 | Reportar una publicación, comentario o anuncio de libro | Alta | Pendiente |
 | RF-030 | Revisar la cola de reportes | Alta | Pendiente |
+| RF-031 | Ocultar el contenido reportado para que deje de mostrarse a los usuarios | Alta | Pendiente |
 
 #### Criterios de aceptación
 
@@ -451,6 +452,20 @@
 - **Cuando** selecciona un reporte,
 
 - **Entonces** el sistema muestra la información del reporte para que pueda revisarlo.
+
+### RF-031 - Ocultar el contenido reportado
+
+**Criterio 1**
+
+- **Dado** que existe una publicación, comentario o anuncio de libro que ha sido reportado,
+- **Cuando** un moderador revisa el reporte y decide ocultar el contenido,
+- **Entonces** el sistema oculta dicho contenido para que deje de mostrarse a los usuarios.
+
+**Criterio 2**
+
+- **Dado** que un contenido reportado ha sido ocultado por un moderador,
+- **Cuando** un usuario intenta visualizar dicho contenido,
+- **Entonces** el sistema impide que el contenido ocultado sea mostrado al usuario.
 
 ## Requerimientos No Funcionales
 
