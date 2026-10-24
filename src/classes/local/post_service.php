@@ -307,4 +307,25 @@ class post_service {
 
         return true;
     }
+
+    /**
+     * Obtiene las publicaciones visibles de una materia.
+     *
+     * @param int $courseid ID de la materia.
+     * @param int $page Numero de pagina (base 0).
+     * @param int $perpage Publicaciones por pagina.
+     * @return array Lista de publicaciones, las mas recientes primero.
+     */
+    public static function get_course_feed(int $courseid, int $page, int $perpage): array {
+        global $DB;
+
+        return array_values($DB->get_records(
+            'local_chuspasocial_post',
+            ['courseid' => $courseid, 'hidden' => 0],
+            'timecreated DESC, id DESC',
+            '*',
+            $page * $perpage,
+            $perpage
+        ));
+    }
 }
