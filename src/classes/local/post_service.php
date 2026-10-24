@@ -328,4 +328,31 @@ class post_service {
             $perpage
         ));
     }
+
+    /**
+     * Obtiene el muro general: publicaciones generales y de mis materias.
+     *
+     * @param int $page Numero de pagina (base 0).
+     * @param int $perpage Publicaciones por pagina.
+     * @return array Registros de local_chuspasocial_post.
+     */
+    public static function get_general_feed(int $page, int $perpage): array {
+        global $DB;
+
+        // Cursos en los que el usuario esta inscrito, mas el muro general (courseid 0).
+        $courseids = array_keys(enrol_get_my_courses('id'));
+        $courseids[] = 0;
+
+        [$insql, $params] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED, 'cid');
+
+        return array_values($DB->get_records_select(
+            'local_chuspasocial_post',
+            "courseid $insql",
+            $params,
+            'timecreated DESC, id DESC',
+            '*',
+            $page * $perpage,
+            $perpage
+        ));
+    }
 }
