@@ -38,19 +38,19 @@ a una persona identificada de la comunidad.
 |---|---|
 | Plataforma | Moodle 4.5 LTS (plugin tipo `local_chuspasocial` + bloque de Dashboard) |
 | Backend | PHP 8.1 – 8.3, APIs de Moodle (DML, Events, Tags, Messaging, Capabilities) |
-
-**Extensiones PHP obligatorias** (Moodle 4.5 LTS):
-
-`ctype`, `curl`, `dom`, `gd`, `iconv`, `intl`, `json`, `mbstring`, `pcre`, `simplexml`, `spl`, `xml`, `zip`
-
-Además, la extensión de tu base de datos (`pgsql`, `mysqli`, `sqlsrv` u `oci8`).
-
-**Recomendadas:** `openssl`, `soap`, `sodium` (obligatoria en PHP 8 o superior), `xmlrpc`
 | Base de datos | MariaDB / MySQL / PostgreSQL (vía XMLDB de Moodle) |
 | Frontend | Plantillas Mustache, módulos JavaScript AMD, Bootstrap (tema Boost) |
 | Dependencias | Composer 2, Node.js 20 + Grunt (para compilar JS) |
 | Calidad | PHPUnit, Behat, PHP_CodeSniffer con el estándar `moodle-cs` |
 | CI | GitHub Actions + `moodle-plugin-ci` |
+
+**Extensiones PHP obligatorias** (Moodle 4.5 LTS):
+
+`ctype`, `curl`, `dom`, `fileinfo`, `filter`, `gd`, `hash`, `iconv`, `intl`, `json`, `mbstring`, `openssl`, `pcre`, `simplexml`, `sodium`, `spl`, `xml`, `xmlreader`, `zip`, `zlib`
+
+Además, la extensión de tu base de datos (`pgsql` o `mysqli`).
+
+**Recomendadas:** `exif`, `soap`, `tokenizer`
 
 La interfaz está disponible en español e inglés (`lang/es`, `lang/en`). El código
 se escribe en inglés, según la convención de Moodle.
