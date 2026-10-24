@@ -322,6 +322,8 @@ class post_service {
         }
 
         return has_capability('local/chuspasocial:postannouncement', $context);
+    }
+    /**
      * Obtiene las publicaciones visibles de una materia.
      *
      * @param int $courseid ID de la materia.
