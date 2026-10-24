@@ -1017,6 +1017,7 @@
 | ID | Descripción |
 |---|---|
 | RS-001 | El cron de Moodle debe estar activo y ejecutarse periódicamente para procesar las notificaciones y tareas programadas de ChuspaSocial. Si no se cumple, estas funciones pueden retrasarse o no ejecutarse. |
+| RS-002 | La mensajería de Moodle debe estar habilitada mediante el ajuste `messaging`. Si no se cumple, el contacto con vendedores del Marketplace y las notificaciones de ChuspaSocial pueden no estar disponibles o funcionar incorrectamente. |
 | RS-003 | La funcionalidad de tags de Moodle debe estar habilitada mediante el ajuste `usetags`. Si no se cumple, las funciones de etiquetado y filtrado por tags de ChuspaSocial pueden no estar disponibles o funcionar incorrectamente. |
 ### RF-004
 
